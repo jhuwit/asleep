@@ -38,7 +38,7 @@ convert_to_df = function(x, colname = "steps", tz = "UTC") {
 #' information about the data.
 #' @export
 #'
-#' @inheritParams sc_load_model
+#' @inheritParams sl_load_model
 #' @examples
 #' file = system.file("extdata/P30_wrist100.csv.gz", package = "stepcount")
 #' if (stepcount_check()) {
@@ -70,7 +70,7 @@ convert_to_df = function(x, colname = "steps", tz = "UTC") {
 #'   }
 #'
 #' }
-stepcount = function(
+asleep = function(
     file,
     sample_rate = NULL,
     model_type = c("ssl", "rf"),
@@ -91,10 +91,8 @@ stepcount = function(
   if (verbose) {
     message("Loading model...")
   }
-  model = sc_load_model(
+  model = sl_load_model(
     model_path = model_path,
-    model_type = model_type,
-    check_md5 = TRUE,
     force_download = FALSE,
     as_python = TRUE)
 
@@ -151,7 +149,7 @@ transform_data_to_files = function(file, verbose = TRUE) {
 
 #' @export
 #' @rdname stepcount
-#' @param model A model object loaded from `sc_load_model`, but
+#' @param model A model object loaded from `sl_load_model`, but
 #' `as_python` must be `TRUE`
 stepcount_with_model = function(
     file,
