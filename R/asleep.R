@@ -107,6 +107,7 @@ summarize_daily_sleep = function(sdf) {
 #' The sleepnet paper uses 22
 #' @param time_shift The number hours to shift forward or backward from
 #' the current device time. e.g. +1 or -1
+#' @param local_repo_path path to load model definition from local repo description
 #' @param report_light_and_temp If true, it adds mean temp, and light columns to the predictions
 #'
 #' @returns A list of outputs, including summaries, paths, and dataframes.
@@ -147,12 +148,16 @@ asleep = function(
     file,
     outdir = NULL,
     model_path = NULL,
+    local_repo_path = NULL,
     min_wear_hours = 22L,
     time_shift = "0",
     report_light_and_temp = FALSE,
     pytorch_device = c("cpu", "cuda:0"),
     verbose = TRUE
 ) {
+
+  wear_duration_H = NULL
+  rm(list = c("wear_duration_H"))
 
   try({
     hc = reticulate::import("hydra.core")
@@ -190,7 +195,11 @@ asleep = function(
     model_weight_path = normalizePath(path.expand(model_path))
   }
   args$model_weight_path = model_weight_path
-  args$local_repo_path = ""
+  if (is.null(local_repo_path)) {
+    args$local_repo_path = ""
+  } else {
+    args$local_repo_path = normalizePath(path.expand(local_repo_path))
+  }
   args$min_wear = min_wear
   args$time_shift = time_shift
 

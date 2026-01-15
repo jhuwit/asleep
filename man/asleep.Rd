@@ -8,6 +8,7 @@ asleep(
   file,
   outdir = NULL,
   model_path = NULL,
+  local_repo_path = NULL,
   min_wear_hours = 22L,
   time_shift = "0",
   report_light_and_temp = FALSE,
@@ -24,6 +25,8 @@ CWA, GT3X, and \code{GENEActiv} bin files}
 \item{model_path}{the file path to the model.  If on disk, this can be
 re-used and not re-downloaded.  If \code{NULL}, will download to the
 temporary directory}
+
+\item{local_repo_path}{path to load model definition from local repo description}
 
 \item{min_wear_hours}{Min wear time in hours to be eligible for summary statistics computation.
 The sleepnet paper uses 22}
