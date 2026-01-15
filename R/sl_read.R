@@ -17,15 +17,9 @@
 #'
 #' @examples
 #'
-#' file = system.file("extdata/P30_wrist100.csv.gz", package = "asleep")
+#' file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 #' if (asleep_check()) {
 #'   out = sl_read(file)
-#' }
-#' \dontrun{
-#'   file = system.file("extdata/P30_wrist100.csv.gz", package = "asleep")
-#'   if (asleep_check()) {
-#'     out = sl_read(file, sample_rate = 100L)
-#'   }
 #' }
 sl_read = function(
     file,

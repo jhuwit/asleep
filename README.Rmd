@@ -1,0 +1,95 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
+  cache = TRUE
+)
+library(asleep)
+library(reticulate)
+options(digits.secs = 3)
+```
+
+# stepcount
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jhuwit/asleep/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/asleep/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/jhuwit/asleep/graph/badge.svg)](https://app.codecov.io/gh/jhuwit/asleep)
+<!-- badges: end -->
+
+The goal of `asleep` is to wrap up the https://github.com/OxWearables/asleep algorithm.
+
+# Installation
+
+## Install `asleep` Python Module
+
+See https://github.com/OxWearables/asleep?tab=readme-ov-file#install for how to install the `asleep` python module.
+
+In `R`, you can do this via:
+
+```{r, eval = FALSE}
+envname = "asleep"
+reticulate::conda_create(envname = envname, packages = c("python=3.8", "openjdk", "pip"))
+Sys.unsetenv("RETICULATE_PYTHON")
+reticulate::use_condaenv(envname)
+reticulate::py_install("asleep", envname = envname, method = "conda", pip = TRUE)
+```
+
+Once this is finished, you should be able to check this via:
+
+```{r, eval = FALSE}
+asleep::have_asleep_condaenv()
+asleep::have_asleep()
+```
+
+# Usage
+
+## Running `asleep` (file)
+The main function is `asleep::asleep`, which takes can take in a file directly:
+
+```{r run_asleep_file}
+library(asleep)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
+if (asleep_check()) {
+  out = asleep(file = file)
+}
+```
+
+Let's see inside the output, which is a list of values, namely a `data.frame` of outputs:
+
+```{r asleep_output}
+names(out)
+str(out)
+head(out$predictions)
+head(out$summary)
+head(out$day_summary)
+```
+The main caveat is that `asleep` is very precise in the format of the data, primarily it must have the columns `time`, `x`, `y`, and `z` in the data.  
+
+## Running `asleep` (data frame)
+Alternatively, you can pass out a `data.frame`, rename the columns to what you need them to be and then run `asleep` on that:
+
+```{r run_asleep_df}
+df = readr::read_csv(file)
+head(df)
+out_df = asleep(file = df)
+```
+
+Which gives same output for this data:
+
+```{r asleep_file_df_check, dependson=c("run_asleep_file", "run_asleep_df")}
+all.equal(out[c("predictions", "summary", "day_summary")],
+          out_df[c("predictions", "summary", "day_summary")])
+```
+
+

@@ -32,7 +32,7 @@ sl_load_model = function(
   } else {
     model_path = path.expand(model_path)
   }
-  model = asleep$load_model(
+  model = asleep$get_sleep$load_model(
     model_path = model_path,
     force_download = force_download)
   model
@@ -47,6 +47,6 @@ sl_download_model = function(
     ...
 ) {
   base_url = sl_url()
-  curl::curl_download(url = url, destfile = model_path, ...)
+  curl::curl_download(url = base_url, destfile = model_path, ...)
   return(model_path)
 }

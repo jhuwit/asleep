@@ -42,6 +42,7 @@ transform_data_to_files = function(file, verbose = TRUE) {
 summarize_daily_sleep = function(sdf) {
   get_mean_median = function(x) {
     x %>%
+      dplyr::select(-dplyr::any_of("wear_duration_H")) %>%
       dplyr::summarise(
         dplyr::across(
           dplyr::where(is.numeric), list(
@@ -49,35 +50,44 @@ summarize_daily_sleep = function(sdf) {
             median = ~ median(.x, na.rm = TRUE)
           )))
   }
-  day_of_week = is_weekend = NULL
-  rm(list = c("day_of_week", "is_weekend"))
+  prefix = day_of_week = is_weekend = NULL
+  rm(list = c("day_of_week", "prefix", "is_weekend"))
 
+  sdf = sdf %>%
+    dplyr::mutate(
+      day_of_week = as.character(day_of_week),
+      day_of_week = dplyr::case_match(
+        day_of_week,
+        "0" ~ "Monday",
+        "1" ~ "Tuesday",
+        "2" ~ "Wednesday",
+        "3" ~ "Thursday",
+        "4" ~ "Friday",
+        "5" ~ "Saturday",
+        "6" ~ "Sunday"
+      ))
 
   overall = sdf %>%
-    get_mean_median() %>%
-    dplyr::mutate(prefix = "overall")
+    get_mean_median()
+  if (nrow(overall) > 0) {
+    overall = overall %>%
+      dplyr::mutate(prefix = "overall") %>%
+      dplyr::select(prefix, dplyr::everything())
+  }
 
   dow = sdf %>%
     dplyr::group_by(day_of_week) %>%
     get_mean_median() %>%
-    dplyr::mutate(
-      day_of_week = dplyr::case_match(
-        day_of_week,
-        "Monday" ~ 0,
-        "Tuesday" ~ 1,
-        "Wednesday" ~ 2,
-        "Thursday" ~ 3,
-        "Friday" ~ 4,
-        "Saturday" ~ 5,
-        "Sunday" ~ 6
-      )) %>%
-    dplyr::rename(prefix = day_of_week)
+    dplyr::rename(prefix = day_of_week) %>%
+    dplyr::select(prefix, dplyr::everything())
 
   we = sdf %>%
     dplyr::group_by(is_weekend) %>%
     get_mean_median() %>%
     dplyr::mutate(is_weekend = ifelse(is_weekend, "weekend", "weekday")) %>%
-    dplyr::rename(prefix = is_weekend)
+    dplyr::rename(prefix = is_weekend) %>%
+    dplyr::mutate(prefix = as.character(prefix)) %>%
+    dplyr::select(prefix, dplyr::everything())
 
   result = dplyr::bind_rows(overall, dow, we)
   return(result)
@@ -103,13 +113,13 @@ summarize_daily_sleep = function(sdf) {
 #' @export
 #'
 #' @examples
-#' file = system.file("extdata/P30_wrist100.csv.gz", package = "stepcount")
+#' file = system.file("extdata/example_sleep.csv.gz", package = "stepcount")
 #' if (asleep_check()) {
 #'   out = asleep(file = file)
 #'   pred = out$predictions
 #' }
 #' \dontrun{
-#'   file = system.file("extdata/P30_wrist100.csv.gz", package = "stepcount")
+#'   file = system.file("extdata/example_sleep.csv.gz", package = "stepcount")
 #'   df = readr::read_csv(file)
 #'   if (asleep_check()) {
 #'     out = stepcount(file = df)
@@ -143,7 +153,12 @@ asleep = function(
     pytorch_device = c("cpu", "cuda:0"),
     verbose = TRUE
 ) {
-  #' @param time_shift The number hours to shift forward or backward from the current device time. e.g. +1 or -1
+
+  try({
+    hc = reticulate::import("hydra.core")
+    hc_inst = hc$global_hydra$GlobalHydra$instance()
+    hc_inst$clear()
+  }, silent = TRUE)
 
   assertthat::assert_that(
     assertthat::is.string(time_shift),
@@ -190,6 +205,7 @@ asleep = function(
       file.remove(file)
     }, add = TRUE)
   }
+  file = file[[1]]
   #
   file = normalizePath(path.expand(file), mustWork = TRUE)
   args$filepath = file
@@ -359,7 +375,7 @@ asleep = function(
 
   pd = reticulate::import("pandas", convert = FALSE)
 
-  if (args$report_light_and_temp) {
+  if (reticulate::py_to_r(args$report_light_and_temp)) {
     predictions_df = data.frame(
       time = reticulate::py_to_r(times),
       sleep_wake = reticulate::py_to_r(sleep_wake_predictions),
@@ -426,9 +442,11 @@ asleep = function(
     reticulate::py_to_r() %>%
     dplyr::filter(wear_duration_H >= reticulate::py_to_r(args$min_wear))
 
-  summary_df = summarize_daily_sleep(sdf)
-
-
+  if (nrow(sdf) == 0) {
+    summary_df = NULL
+  } else {
+    summary_df = summarize_daily_sleep(sdf)
+  }
   # 5. Save outputs
   if (verbose) {
     message("Creating outputs")
