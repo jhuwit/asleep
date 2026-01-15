@@ -9,3 +9,4 @@
 ^R/obsolete/stepcount_original\.R$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^example\.R$
