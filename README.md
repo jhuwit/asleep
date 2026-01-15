@@ -37,6 +37,8 @@ reticulate::py_install(c("asleep", "argparse", "numpy", "pandas"),
 Once this is finished, you should be able to check this via:
 
 ``` r
+envname = "asleep"
+reticulate::use_condaenv(envname)
 asleep::have_asleep()
 ```
 
