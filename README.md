@@ -24,16 +24,19 @@ In `R`, you can do this via:
 
 ``` r
 envname = "asleep"
-reticulate::conda_create(envname = envname, packages = c("python=3.8", "openjdk", "pip"))
-Sys.unsetenv("RETICULATE_PYTHON")
+reticulate::conda_create(envname = envname, 
+                         python_version = "3.8")
 reticulate::use_condaenv(envname)
-reticulate::py_install("asleep", envname = envname, method = "conda", pip = TRUE)
+reticulate::py_install(c("asleep", "argparse", "numpy", "pandas"), 
+                       envname = envname,
+                       method = "conda",
+                       python_version = "3.8",
+                       pip = TRUE)
 ```
 
 Once this is finished, you should be able to check this via:
 
 ``` r
-asleep::have_asleep_condaenv()
 asleep::have_asleep()
 ```
 
