@@ -262,6 +262,8 @@ asleep = function(
   transform_data2model_input = abase_noconvert$get_sleep$transform_data2model_input
   out_model  = transform_data2model_input(
     data2model_path, times_path, non_wear_path, data, args)
+  rm(data)
+  rm(info)
   data2model = out_model[[0]]
   times =  out_model[[1]]
   non_wear = out_model[[2]]
@@ -325,6 +327,7 @@ asleep = function(
   }
   get_sleep_windows = abase_noconvert$get_sleep$get_sleep_windows
   out_windows = get_sleep_windows(data2model, times, non_wear, args)
+  rm(list = c("data2model", "non_wear"))
   binary_y = out_windows[[0]]
   all_sleep_wins_df  = out_windows[[1]]
   sleep_wins_long_per_day_df = out_windows[[2]]
@@ -489,9 +492,37 @@ asleep = function(
     output_json_path = output_json_path
   )
 
+  # NEED THIS FOR TIMES!
+  make_utc_char = function(x) {
+    if (is.character(x)) {
+      return(x)
+    }
+    lubridate::with_tz(x, tz = "UTC") %>%
+      as.character()
+  }
+  predictions_df$time = make_utc_char(predictions_df$time)
+  out_data$data$time = make_utc_char(out_data$data$time)
+
+  out_windows$sleep_wins_long_per_day_df$start = make_utc_char(
+    out_windows$sleep_wins_long_per_day_df$start)
+  out_windows$sleep_wins_long_per_day_df$end = make_utc_char(
+    out_windows$sleep_wins_long_per_day_df$end)
+
+  out_model$times = make_utc_char(out_model$times)
+
+  out_windows$all_sleep_wins_df$start = make_utc_char(
+    out_windows$all_sleep_wins_df$start)
+  out_windows$all_sleep_wins_df$end = make_utc_char(
+    out_windows$all_sleep_wins_df$end)
+  out_windows$all_sleep_wins_df$interval_start = make_utc_char(
+    out_windows$all_sleep_wins_df$interval_start)
+  out_windows$all_sleep_wins_df$interval_end = make_utc_char(
+    out_windows$all_sleep_wins_df$interval_end)
 
   result = list(
     predictions = predictions_df,
+    times = times,
+    times_utc = make_utc_char(times),
     sleep_windows = df_all_sleep_wins,
     sleep_windows_long = df_sleep_wins_long_per_day,
     day_summary = day_summary_df,
