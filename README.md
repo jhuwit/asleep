@@ -71,12 +71,12 @@ if (asleep_check()) {
 #> Parsing raw data
 #> Lowpass filter...Skipping lowpass filter: data sample rate 30 too low for cutoff rate 20
 #> Lowpass filter... Done! (0.00s)
-#> Gravity calibration...Gravity calibration... Done! (0.06s)
-#> Resampling...Resampling... Done! (0.16s)
+#> Gravity calibration...Gravity calibration... Done! (0.08s)
+#> Resampling...Resampling... Done! (0.19s)
 #> {'WearTime(days)': 0.1666662808564815, 'NonwearTime(days)': 0.0, 'NumNonwearEpisodes': 0}
 #> Time shift applied: 0 hours
-#> Raw data file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/raw.csv
-#> Info data file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/info.json
+#> Raw data file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/raw.csv
+#> Info data file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/info.json
 #>                            time         x         y         z  non_wear
 #> 0 2000-01-04 20:00:00.000000000 -0.704000  0.413000 -0.540000     False
 #> 1 2000-01-04 20:00:00.033333333 -0.720795  0.419000 -0.561667     False
@@ -84,15 +84,16 @@ if (asleep_check()) {
 #> 3 2000-01-04 20:00:00.100000000 -0.698000  0.434000 -0.525000     False
 #> 4 2000-01-04 20:00:00.133333333 -0.674051  0.417308 -0.575385     False
 #> Transforming data for model input
-#> Data2model file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/data2model.npy
-#> Times file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/times.npy
-#> Non-wear file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/non_wear.npy
+#> Data2model file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/data2model.npy
+#> Times file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/times.npy
+#> Non-wear file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/non_wear.npy
 #> Data shape for data2model: (480, 3, 900)
 #> Data shape for times: (480,)
 #> Data shape for nonwear: (480,)
 #> Detecting sleep windows
+#> Downloading https://github.com/OxWearables/asleep/releases/download/0.4.12/ssl.joblib.lzma...
 #> prediction set sample count: 480
-#> Using local /Users/johnmuschelli/Library/Caches/org.R-project.R/R/reticulate/uv/cache/archive-v0/sIQv86OXvoD56R67KvlDd/lib/python3.8/site-packages/asleep/torch_hub_cache/OxWearables_ssl-wearables_v1.0.0
+#> Using local /Users/johnmuschelli/Library/Caches/org.R-project.R/R/reticulate/uv/cache/archive-v0/WkwZPbhzsuDleh3_sED9q/lib/python3.8/site-packages/asleep/torch_hub_cache/OxWearables_ssl-wearables_v1.0.0
 #> (480,)
 #> (array([0., 2., 3.]), array([ 79,  45, 356]))
 #> Running SleepNet
@@ -101,14 +102,14 @@ if (asleep_check()) {
 #> access remote repo
 #> 1
 #> Total sample count : 355
-#> Save predictions to /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/y_pred.npy
-#> Save prediction probs to /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/pred_prob.npy
-#> Time used 8.065661191940308
+#> Save predictions to /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/y_pred.npy
+#> Save prediction probs to /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/pred_prob.npy
+#> Time used 62.39296007156372
 #> Mapping SleepNet predictions back to original time series
 #> Generating predictions dataframe
 #> Generating sleep block df and indicate the longest block per day
 #> Generating daily summary statistics
-#> Summary saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/summary.json
+#> Summary saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/summary.json
 #> Creating outputs
 ```
 
@@ -244,22 +245,22 @@ str(out)
 #>   ..- attr(*, "pandas.index")=RangeIndex(start=0, stop=1, step=1)
 #>  $ summary           : NULL
 #>  $ paths             :List of 7
-#>   ..$ raw_data_path   : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/raw.csv"
-#>   ..$ info_data_path  : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/info.json"
-#>   ..$ data2model_path : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/data2model.npy"
-#>   ..$ times_path      : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/times.npy"
-#>   ..$ non_wear_path   : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/non_wear.npy"
-#>   ..$ day_summary_path: chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/day_summary.csv"
-#>   ..$ output_json_path: chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpxfoupg/file1336f44ac26c8/summary.json"
+#>   ..$ raw_data_path   : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/raw.csv"
+#>   ..$ info_data_path  : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/info.json"
+#>   ..$ data2model_path : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/data2model.npy"
+#>   ..$ times_path      : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/times.npy"
+#>   ..$ non_wear_path   : chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/non_wear.npy"
+#>   ..$ day_summary_path: chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/day_summary.csv"
+#>   ..$ output_json_path: chr "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff11afb505d/summary.json"
 #>  $ output_data       :List of 2
-#>   ..$ :'data.frame': 432000 obs. of  5 variables:
+#>   ..$ data:'data.frame': 432000 obs. of  5 variables:
 #>   .. ..$ time    : POSIXct[1:432000], format: "2000-01-04 15:00:00.000" "2000-01-04 15:00:00.033" ...
 #>   .. ..$ x       : num [1:432000] -0.704 -0.721 -0.665 -0.698 -0.674 ...
 #>   .. ..$ y       : num [1:432000] 0.413 0.419 0.429 0.434 0.417 ...
 #>   .. ..$ z       : num [1:432000] -0.54 -0.562 -0.579 -0.525 -0.575 ...
 #>   .. ..$ non_wear: logi [1:432000] FALSE FALSE FALSE FALSE FALSE FALSE ...
 #>   .. ..- attr(*, "pandas.index")=RangeIndex(start=0, stop=432000, step=1)
-#>   ..$ :List of 17
+#>   ..$ info:List of 17
 #>   .. ..$ Filename             : chr "/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/asleep/extdata/example_sleep.csv.gz"
 #>   .. ..$ Device               : chr ".csv"
 #>   .. ..$ Filesize(MB)         : num 3
@@ -278,27 +279,27 @@ str(out)
 #>   .. ..$ StartTime            : chr "2000-01-04 20:00:00"
 #>   .. ..$ EndTime              : chr "2000-01-04 23:59:59"
 #>  $ output_model      :List of 3
-#>   ..$ : num [1:480, 1:3, 1:900] -0.704 -0.689 -0.625 -0.736 -0.663 -0.83 -0.569 -0.408 0.331 0.367 ...
-#>   ..$ : POSIXct[1:480], format: "2000-01-04 15:00:00" "2000-01-04 15:00:30" ...
-#>   ..$ : logi [1:480(1d)] FALSE FALSE FALSE FALSE FALSE FALSE ...
+#>   ..$ data2model: num [1:480, 1:3, 1:900] -0.704 -0.689 -0.625 -0.736 -0.663 -0.83 -0.569 -0.408 0.331 0.367 ...
+#>   ..$ times     : POSIXct[1:480], format: "2000-01-04 15:00:00" "2000-01-04 15:00:30" ...
+#>   ..$ non_wear  : logi [1:480(1d)] FALSE FALSE FALSE FALSE FALSE FALSE ...
 #>  $ output_windows    :List of 5
-#>   ..$ : num [1:480(1d)] 0 0 0 0 0 0 0 0 0 0 ...
-#>   ..$ :'data.frame': 1 obs. of  5 variables:
+#>   ..$ binary_y                  : num [1:480(1d)] 0 0 0 0 0 0 0 0 0 0 ...
+#>   ..$ all_sleep_wins_df         :'data.frame':   1 obs. of  5 variables:
 #>   .. ..$ start          : POSIXct[1:1], format: "2000-01-04 16:02:00"
 #>   .. ..$ end            : POSIXct[1:1], format: "2000-01-04 18:59:30"
 #>   .. ..$ interval_start : POSIXct[1:1], format: "2000-01-04 07:00:00"
 #>   .. ..$ interval_end   : POSIXct[1:1], format: "2000-01-05 06:59:59"
 #>   .. ..$ wear_duration_H: num 4
 #>   .. ..- attr(*, "pandas.index")=RangeIndex(start=0, stop=1, step=1)
-#>   ..$ :'data.frame': 1 obs. of  2 variables:
+#>   ..$ sleep_wins_long_per_day_df:'data.frame':   1 obs. of  2 variables:
 #>   .. ..$ start: POSIXct[1:1], format: "2000-01-04 16:02:00"
 #>   .. ..$ end  : POSIXct[1:1], format: "2000-01-04 18:59:30"
 #>   .. ..- attr(*, "pandas.index")=RangeIndex(start=0, stop=1, step=1)
-#>   ..$ : num [1:355, 1:3, 1:900] 0.683 0.009 0.009 0.009 0.009 0.009 0.009 0.009 0.009 0.009 ...
-#>   ..$ : num [1:355(1d)] 0 0 0 0 0 0 0 0 0 0 ...
+#>   ..$ master_acc                : num [1:355, 1:3, 1:900] 0.683 0.009 0.009 0.009 0.009 0.009 0.009 0.009 0.009 0.009 ...
+#>   ..$ master_npids              : num [1:355(1d)] 0 0 0 0 0 0 0 0 0 0 ...
 #>  $ output_sleep      :List of 2
-#>   ..$ : num [1:355(1d)] 0 0 0 0 0 0 0 0 0 0 ...
-#>   ..$ : num [1:355(1d)] 0 0 0 0 0 0 0 0 0 0 ...
+#>   ..$ y_pred   : num [1:355(1d)] 0 0 0 0 0 0 0 0 0 0 ...
+#>   ..$ test_pids: num [1:355(1d)] 0 0 0 0 0 0 0 0 0 0 ...
 head(out$predictions)
 #>                  time sleep_wake sleep_stage raw_label
 #> 1 2000-01-04 15:00:00       wake        wake         0
@@ -423,12 +424,12 @@ out_df = asleep(file = df)
 #> Parsing raw data
 #> Lowpass filter...Skipping lowpass filter: data sample rate 30 too low for cutoff rate 20
 #> Lowpass filter... Done! (0.00s)
-#> Gravity calibration...Gravity calibration... Done! (0.07s)
-#> Resampling...Resampling... Done! (0.19s)
+#> Gravity calibration...Gravity calibration... Done! (0.05s)
+#> Resampling...Resampling... Done! (0.16s)
 #> {'WearTime(days)': 0.1666662808564815, 'NonwearTime(days)': 0.0, 'NumNonwearEpisodes': 0}
 #> Time shift applied: 0 hours
-#> Raw data file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7U210K/file1345d256ad843/raw.csv
-#> Info data file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7U210K/file1345d256ad843/info.json
+#> Raw data file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff16bb55829/raw.csv
+#> Info data file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff16bb55829/info.json
 #>                            time         x         y         z  non_wear
 #> 0 2000-01-04 20:00:00.000000000 -0.704000  0.413000 -0.540000     False
 #> 1 2000-01-04 20:00:00.033333333 -0.720795  0.419000 -0.561667     False
@@ -436,15 +437,15 @@ out_df = asleep(file = df)
 #> 3 2000-01-04 20:00:00.100000000 -0.698000  0.434000 -0.525000     False
 #> 4 2000-01-04 20:00:00.133333333 -0.674051  0.417308 -0.575385     False
 #> Transforming data for model input
-#> Data2model file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7U210K/file1345d256ad843/data2model.npy
-#> Times file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7U210K/file1345d256ad843/times.npy
-#> Non-wear file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7U210K/file1345d256ad843/non_wear.npy
+#> Data2model file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff16bb55829/data2model.npy
+#> Times file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff16bb55829/times.npy
+#> Non-wear file saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff16bb55829/non_wear.npy
 #> Data shape for data2model: (480, 3, 900)
 #> Data shape for times: (480,)
 #> Data shape for nonwear: (480,)
 #> Detecting sleep windows
 #> prediction set sample count: 480
-#> Using local /Users/johnmuschelli/Library/Caches/org.R-project.R/R/reticulate/uv/cache/archive-v0/sIQv86OXvoD56R67KvlDd/lib/python3.8/site-packages/asleep/torch_hub_cache/OxWearables_ssl-wearables_v1.0.0
+#> Using local /Users/johnmuschelli/Library/Caches/org.R-project.R/R/reticulate/uv/cache/archive-v0/WkwZPbhzsuDleh3_sED9q/lib/python3.8/site-packages/asleep/torch_hub_cache/OxWearables_ssl-wearables_v1.0.0
 #> (480,)
 #> (array([0., 2., 3.]), array([ 79,  45, 356]))
 #> Running SleepNet
@@ -453,14 +454,14 @@ out_df = asleep(file = df)
 #> access remote repo
 #> 1
 #> Total sample count : 355
-#> Save predictions to /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7U210K/file1345d256ad843/y_pred.npy
-#> Save prediction probs to /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7U210K/file1345d256ad843/pred_prob.npy
-#> Time used 7.724024057388306
+#> Save predictions to /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff16bb55829/y_pred.npy
+#> Save prediction probs to /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff16bb55829/pred_prob.npy
+#> Time used 7.000052213668823
 #> Mapping SleepNet predictions back to original time series
 #> Generating predictions dataframe
 #> Generating sleep block df and indicate the longest block per day
 #> Generating daily summary statistics
-#> Summary saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7U210K/file1345d256ad843/summary.json
+#> Summary saved to: /private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmp7hwtHx/file5ff16bb55829/summary.json
 #> Creating outputs
 ```
 
