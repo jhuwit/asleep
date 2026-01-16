@@ -249,6 +249,8 @@ asleep = function(
     args = args)
   data = out_data[[0]]
   info = out_data[[1]]
+  out_data = reticulate::py_to_r(out_data)
+  names(out_data) = c("data", "info")
 
 
 
@@ -263,6 +265,10 @@ asleep = function(
   data2model = out_model[[0]]
   times =  out_model[[1]]
   non_wear = out_model[[2]]
+
+  out_model = reticulate::py_to_r(out_model)
+  names(out_model) = c("data2model", "times", "non_wear")
+
 
   if (verbose) {
     message(
@@ -295,6 +301,8 @@ asleep = function(
     out_temp =  mean_temp_and_light(data)
     temp = out_temp[[0]]
     light = out_temp[[1]]
+    out_temp = reticulate::py_to_r(out_temp)
+    names(out_temp) = c("temp", "light")
     if (verbose) {
       message(
         sprintf(
@@ -323,6 +331,15 @@ asleep = function(
   master_acc = out_windows[[3]]
   master_npids = out_windows[[4]]
 
+  out_windows = reticulate::py_to_r(out_windows)
+  names(out_windows) = c(
+    "binary_y",
+    "all_sleep_wins_df",
+    "sleep_wins_long_per_day_df",
+    "master_acc",
+    "master_npids"
+  )
+
   master_npids = reticulate::py_to_r(master_npids)
 
   if (length(master_npids) <= 0) {
@@ -345,6 +362,8 @@ asleep = function(
   )
   y_pred = out_sleep[[0]]
   test_pids = out_sleep[[1]]
+  out_sleep = reticulate::py_to_r(out_sleep)
+  names(out_sleep) = c("y_pred", "test_pids")
   sleepnet_output = binary_y
 
   # 2. Map back SleepNet predictions to the original time series
@@ -469,6 +488,8 @@ asleep = function(
     day_summary_path = day_summary_path,
     output_json_path = output_json_path
   )
+
+
   result = list(
     predictions = predictions_df,
     sleep_windows = df_all_sleep_wins,
