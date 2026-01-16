@@ -498,7 +498,7 @@ asleep = function(
       return(x)
     }
     lubridate::with_tz(x, tz = "UTC") %>%
-      format(data$time, "%Y-%m-%d %H:%M:%S")
+      format("%Y-%m-%d %H:%M:%S")
   }
   predictions_df$time = make_utc_char(predictions_df$time)
   out_data$data$time = make_utc_char(out_data$data$time)
