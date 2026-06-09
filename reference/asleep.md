@@ -8,8 +8,6 @@ Run `asleep` Model on Data
 asleep(
   file,
   outdir = NULL,
-  model_path = NULL,
-  local_repo_path = NULL,
   min_wear_hours = 22L,
   time_shift = "0",
   report_light_and_temp = FALSE,
@@ -28,15 +26,6 @@ asleep(
 - outdir:
 
   output directory for CSVs and outputs
-
-- model_path:
-
-  the file path to the model. If on disk, this can be re-used and not
-  re-downloaded. If `NULL`, will download to the temporary directory
-
-- local_repo_path:
-
-  path to load model definition from local repo description
 
 - min_wear_hours:
 
@@ -59,6 +48,10 @@ asleep(
 - verbose:
 
   print diagnostic messages
+
+- local_repo_path:
+
+  path to load model definition from local repo description
 
 ## Value
 

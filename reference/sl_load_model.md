@@ -1,6 +1,6 @@
-# Load `asleep` Model
+# Load `asleep` Model for Sleep Window Detector
 
-Load `asleep` Model
+Load `asleep` Model for Sleep Window Detector
 
 ## Usage
 

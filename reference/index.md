@@ -17,12 +17,6 @@
   [`sl_get_sslnet()`](https://jhuwit.github.io/asleep/reference/get_sslnet.md)
   : Get SSL Net -
 
-- [`sl_load_model()`](https://jhuwit.github.io/asleep/reference/sl_load_model.md)
-  [`sl_download_model()`](https://jhuwit.github.io/asleep/reference/sl_load_model.md)
-  :
-
-  Load `asleep` Model
-
 - [`sl_read()`](https://jhuwit.github.io/asleep/reference/sl_read.md) :
 
   Read a Data Set for `asleep`
