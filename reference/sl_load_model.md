@@ -19,7 +19,8 @@ sl_download_model(model_path, ...)
 
 - force_download:
 
-  force a dof the model, even if it already exists at `model_path`
+  force a download of the model, even if it already exists at
+  `model_path`
 
 - as_python:
 

@@ -23,5 +23,5 @@ available.
 if (have_asleep()) {
    asleep_version()
 }
-#> [1] "0.4.16"
+#> [1] "0.4.18"
 ```
