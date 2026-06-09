@@ -7,8 +7,6 @@
 asleep(
   file,
   outdir = NULL,
-  model_path = NULL,
-  local_repo_path = NULL,
   min_wear_hours = 22L,
   time_shift = "0",
   report_light_and_temp = FALSE,
@@ -22,12 +20,6 @@ CWA, GT3X, and \code{GENEActiv} bin files}
 
 \item{outdir}{output directory for CSVs and outputs}
 
-\item{model_path}{the file path to the model.  If on disk, this can be
-re-used and not re-downloaded.  If \code{NULL}, will download to the
-temporary directory}
-
-\item{local_repo_path}{path to load model definition from local repo description}
-
 \item{min_wear_hours}{Min wear time in hours to be eligible for summary statistics computation.
 The sleepnet paper uses 22}
 
@@ -39,6 +31,8 @@ the current device time. e.g. +1 or -1}
 \item{pytorch_device}{device to use for prediction for PyTorch.}
 
 \item{verbose}{print diagnostic messages}
+
+\item{local_repo_path}{path to load model definition from local repo description}
 }
 \value{
 A list of outputs, including summaries, paths, and dataframes.

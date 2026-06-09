@@ -56,7 +56,7 @@ summarize_daily_sleep = function(sdf) {
   sdf = sdf %>%
     dplyr::mutate(
       day_of_week = as.character(day_of_week),
-      day_of_week = dplyr::case_match(
+      day_of_week = dplyr::recode_values(
         day_of_week,
         "0" ~ "Monday",
         "1" ~ "Tuesday",
@@ -94,6 +94,10 @@ summarize_daily_sleep = function(sdf) {
 }
 
 
+# @inheritParams sl_load_model
+
+
+
 #' Run `asleep` Model on Data
 #'
 #'
@@ -101,7 +105,6 @@ summarize_daily_sleep = function(sdf) {
 #' CWA, GT3X, and `GENEActiv` bin files
 #' @param pytorch_device device to use for prediction for PyTorch.
 #' @param verbose print diagnostic messages
-#' @inheritParams sl_load_model
 #' @param outdir output directory for CSVs and outputs
 #' @param min_wear_hours Min wear time in hours to be eligible for summary statistics computation.
 #' The sleepnet paper uses 22
@@ -149,14 +152,17 @@ summarize_daily_sleep = function(sdf) {
 asleep = function(
     file,
     outdir = NULL,
-    model_path = NULL,
-    local_repo_path = NULL,
+    # model_path = NULL,
+    # local_repo_path = NULL,
     min_wear_hours = 22L,
     time_shift = "0",
     report_light_and_temp = FALSE,
     pytorch_device = c("cpu", "cuda:0"),
     verbose = TRUE
 ) {
+
+  model_path = NULL
+  local_repo_path = NULL
 
   wear_duration_H = NULL
   rm(list = c("wear_duration_H"))
@@ -541,6 +547,7 @@ asleep = function(
   result = lapply(result, reticulate::py_to_r)
   result
 }
+# nocov end
 
 
 
@@ -558,5 +565,5 @@ read_summary_json = function(output_json_path) {
     value = unlist(list_summarize_daily_sleep)
   )
   rownames(df_summarize_daily_sleep) = NULL
-
+  df_summarize_daily_sleep
 }

@@ -3,7 +3,7 @@ sl_url = function(version = "0.4.12") {
                "releases/download/", version, "/ssl.joblib.lzma")
 }
 
-#' Load `asleep` Model
+#' Load `asleep` Model for Sleep Window Detector
 #'
 #' @param model_path the file path to the model.  If on disk, this can be
 #' re-used and not re-downloaded.  If `NULL`, will download to the
@@ -12,7 +12,7 @@ sl_url = function(version = "0.4.12") {
 #' @param as_python Keep model object as a python object
 #'
 #' @return A model from Python.  `sl_download_model` returns a model file path.
-#' @export
+#' @keywords internal
 sl_load_model = function(
     model_path = NULL,
     force_download = FALSE,
@@ -39,7 +39,7 @@ sl_load_model = function(
   model
 }
 
-#' @export
+#' @keywords internal
 #' @rdname sl_load_model
 #' @param ... for `sl_download_model`, additional arguments to pass to
 #' [curl::curl_download()]

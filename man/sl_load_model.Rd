@@ -3,7 +3,7 @@
 \name{sl_load_model}
 \alias{sl_load_model}
 \alias{sl_download_model}
-\title{Load \code{asleep} Model}
+\title{Load \code{asleep} Model for Sleep Window Detector}
 \usage{
 sl_load_model(model_path = NULL, force_download = FALSE, as_python = TRUE)
 
@@ -25,5 +25,6 @@ temporary directory}
 A model from Python.  \code{sl_download_model} returns a model file path.
 }
 \description{
-Load \code{asleep} Model
+Load \code{asleep} Model for Sleep Window Detector
 }
+\keyword{internal}
