@@ -8,6 +8,7 @@ sl_url = function(version = "0.4.12") {
 #' @param model_path the file path to the model.  If on disk, this can be
 #' re-used and not re-downloaded.  If `NULL`, will download to the
 #' temporary directory
+#' @param force_download force a dof the model, even if it already exists at `model_path`
 #' @param as_python Keep model object as a python object
 #'
 #' @return A model from Python.  `sl_download_model` returns a model file path.

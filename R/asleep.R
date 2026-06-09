@@ -114,16 +114,18 @@ summarize_daily_sleep = function(sdf) {
 #' @export
 #'
 #' @examples
-#' file = system.file("extdata/example_sleep.csv.gz", package = "stepcount")
-#' if (asleep_check()) {
-#'   out = asleep(file = file)
-#'   pred = out$predictions
+#' \donttest{
+#'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
+#'   if (asleep_check()) {
+#'     out = asleep(file = file)
+#'     pred = out$predictions
+#'   }
 #' }
 #' \dontrun{
-#'   file = system.file("extdata/example_sleep.csv.gz", package = "stepcount")
+#'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 #'   df = readr::read_csv(file)
 #'   if (asleep_check()) {
-#'     out = stepcount(file = df)
+#'     out = asleep(file = df)
 #'     st = out$step_times
 #'   }
 #'   if (requireNamespace("ggplot2", quietly = TRUE) &&

@@ -6,3 +6,5 @@
 .quarto
 example.R
 README_cache
+.positai
+docs

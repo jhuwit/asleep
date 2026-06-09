@@ -10,3 +10,8 @@
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^example\.R$
+^\.positai$
+^\.claude$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
