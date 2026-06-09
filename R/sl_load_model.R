@@ -8,7 +8,7 @@ sl_url = function(version = "0.4.12") {
 #' @param model_path the file path to the model.  If on disk, this can be
 #' re-used and not re-downloaded.  If `NULL`, will download to the
 #' temporary directory
-#' @param force_download force a dof the model, even if it already exists at `model_path`
+#' @param force_download force a download of the model, even if it already exists at `model_path`
 #' @param as_python Keep model object as a python object
 #'
 #' @return A model from Python.  `sl_download_model` returns a model file path.
@@ -50,4 +50,21 @@ sl_download_model = function(
   base_url = sl_url()
   curl::curl_download(url = base_url, destfile = model_path, ...)
   return(model_path)
+}
+
+
+#' Download `asleep` models to Cache
+#'
+#' @param force_download force a download of the model, even if it already exists at `model_path`
+#'
+#' @return A model from Python.  `sl_download_model` returns a model file path.
+#' @export
+sl_download_models = function(
+    force_download = FALSE
+
+) {
+  abase_noconvert = reticulate::import("asleep", convert = FALSE)
+
+  abase_noconvert$get_sleep$download_models(force_download = force_download)
+  return(NULL)
 }

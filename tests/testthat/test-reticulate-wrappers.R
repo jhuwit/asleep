@@ -43,7 +43,7 @@ testthat::test_that(".onLoad declares Python requirements through reticulate", {
   testthat::expect_true(out)
   testthat::expect_equal(
     calls$packages,
-    c("asleep==0.4.16", "argparse", "numpy", "pandas")
+    c("asleep==0.4.18", "argparse", "numpy", "pandas")
   )
   testthat::expect_equal(calls$python_version, "3.8")
 })

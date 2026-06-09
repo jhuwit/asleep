@@ -14,7 +14,7 @@ sl_download_model(model_path, ...)
 re-used and not re-downloaded.  If \code{NULL}, will download to the
 temporary directory}
 
-\item{force_download}{force a dof the model, even if it already exists at \code{model_path}}
+\item{force_download}{force a download of the model, even if it already exists at \code{model_path}}
 
 \item{as_python}{Keep model object as a python object}
 

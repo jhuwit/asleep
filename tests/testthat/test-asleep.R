@@ -25,7 +25,10 @@ testthat::test_that("asleep model works", {
       res$predictions,
       c("time", "sleep_wake", "sleep_stage", "raw_label")
     )
-    # testthat::expect_true(is.null(res))
+    testthat::expect_s3_class(res$predictions, "data.frame")
+    testthat::expect_gt(nrow(res$predictions), 0)
+    testthat::expect_s3_class(res$sleep_windows, "data.frame")
+    testthat::expect_s3_class(res$day_summary, "data.frame")
 
     # model = sl_load_model(model_path = model_path,
     #                       as_python = TRUE)
