@@ -59,12 +59,107 @@ A list of outputs, including summaries, paths, and dataframes.
 # \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   if (asleep_check()) {
-    out = asleep(file = file)
+    out = asleep(file = file, verbose = 2L)
     pred = out$predictions
   }
 #> Downloading uv...
 #> Done!
 #> Checking Data
+#> Resnet(
+#>   (feature_extractor): Sequential(
+#>     (layer1): Sequential(
+#>       (0): Conv1d(3, 64, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>       (1): ResBlock(
+#>         (bn1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (bn2): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (conv1): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (conv2): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (relu): ReLU(inplace=True)
+#>       )
+#>       (2): ResBlock(
+#>         (bn1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (bn2): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (conv1): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (conv2): Conv1d(64, 64, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (relu): ReLU(inplace=True)
+#>       )
+#>       (3): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>       (4): ReLU(inplace=True)
+#>       (5): Downsample()
+#>     )
+#>     (layer2): Sequential(
+#>       (0): Conv1d(64, 128, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>       (1): ResBlock(
+#>         (bn1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (bn2): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (conv1): Conv1d(128, 128, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (conv2): Conv1d(128, 128, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (relu): ReLU(inplace=True)
+#>       )
+#>       (2): ResBlock(
+#>         (bn1): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (bn2): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (conv1): Conv1d(128, 128, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (conv2): Conv1d(128, 128, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (relu): ReLU(inplace=True)
+#>       )
+#>       (3): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>       (4): ReLU(inplace=True)
+#>       (5): Downsample()
+#>     )
+#>     (layer3): Sequential(
+#>       (0): Conv1d(128, 256, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>       (1): ResBlock(
+#>         (bn1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (bn2): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (conv1): Conv1d(256, 256, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (conv2): Conv1d(256, 256, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (relu): ReLU(inplace=True)
+#>       )
+#>       (2): ResBlock(
+#>         (bn1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (bn2): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (conv1): Conv1d(256, 256, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (conv2): Conv1d(256, 256, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (relu): ReLU(inplace=True)
+#>       )
+#>       (3): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>       (4): ReLU(inplace=True)
+#>       (5): Downsample()
+#>     )
+#>     (layer4): Sequential(
+#>       (0): Conv1d(256, 512, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>       (1): ResBlock(
+#>         (bn1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (bn2): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (conv1): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (conv2): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (relu): ReLU(inplace=True)
+#>       )
+#>       (2): ResBlock(
+#>         (bn1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (bn2): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>         (conv1): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (conv2): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>         (relu): ReLU(inplace=True)
+#>       )
+#>       (3): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>       (4): ReLU(inplace=True)
+#>       (5): Downsample()
+#>     )
+#>     (layer5): Sequential(
+#>       (0): Conv1d(512, 1024, kernel_size=(5,), stride=(1,), padding=(2,), bias=False, padding_mode=circular)
+#>       (1): BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+#>       (2): ReLU(inplace=True)
+#>       (3): Downsample()
+#>     )
+#>   )
+#>   (classifier): EvaClassifier(
+#>     (linear1): Linear(in_features=1024, out_features=512, bias=True)
+#>     (linear2): Linear(in_features=512, out_features=4, bias=True)
+#>   )
+#> )
+#>  signature: (*args, **kwargs)
 #> Parsing raw data
 #> Transforming data for model input
 #> Data shape for data2model: (480, 3, 900)
