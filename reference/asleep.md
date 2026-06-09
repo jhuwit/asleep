@@ -49,10 +49,6 @@ asleep(
 
   print diagnostic messages
 
-- local_repo_path:
-
-  path to load model definition from local repo description
-
 ## Value
 
 A list of outputs, including summaries, paths, and dataframes.
