@@ -31,8 +31,6 @@ the current device time. e.g. +1 or -1}
 \item{pytorch_device}{device to use for prediction for PyTorch.}
 
 \item{verbose}{print diagnostic messages}
-
-\item{local_repo_path}{path to load model definition from local repo description}
 }
 \value{
 A list of outputs, including summaries, paths, and dataframes.

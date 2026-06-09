@@ -95,6 +95,7 @@ summarize_daily_sleep = function(sdf) {
 
 
 # @inheritParams sl_load_model
+# @param local_repo_path path to load model definition from local repo description
 
 
 
@@ -110,7 +111,6 @@ summarize_daily_sleep = function(sdf) {
 #' The sleepnet paper uses 22
 #' @param time_shift The number hours to shift forward or backward from
 #' the current device time. e.g. +1 or -1
-#' @param local_repo_path path to load model definition from local repo description
 #' @param report_light_and_temp If true, it adds mean temp, and light columns to the predictions
 #'
 #' @returns A list of outputs, including summaries, paths, and dataframes.
@@ -149,6 +149,7 @@ summarize_daily_sleep = function(sdf) {
 #'   }
 #'
 #' }
+# nocov start
 asleep = function(
     file,
     outdir = NULL,
@@ -229,6 +230,8 @@ asleep = function(
 
   abase_noconvert = reticulate::import("asleep", convert = FALSE)
 
+  # call to make sure it exists and is imported before we call the get_sslnet function
+  abase_noconvert$sslmodel$get_sslnet()
   # raw_data_path = tempfile(fileext = "raw.csv")
   # info_data_path = tempfile(fileext = "info.json")
   # data2model_path = tempfile(fileext = "data2model.npy")
