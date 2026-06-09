@@ -14,7 +14,7 @@ testthat::test_that("asleep model works", {
     # asleep::sl_download_model(
     #   model_path = model_path
     # )
-    res = asleep(file = file)
+    res = asleep(file = file, verbose = 2L)
     testthat::expect_named(
       res,
       c("predictions", "times", "times_utc", "sleep_windows", "sleep_windows_long",

@@ -42,7 +42,7 @@ Run \code{asleep} Model on Data
 \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   if (asleep_check()) {
-    out = asleep(file = file)
+    out = asleep(file = file, verbose = 2L)
     pred = out$predictions
   }
 }

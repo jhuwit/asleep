@@ -120,7 +120,7 @@ summarize_daily_sleep = function(sdf) {
 #' \donttest{
 #'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 #'   if (asleep_check()) {
-#'     out = asleep(file = file)
+#'     out = asleep(file = file, verbose = 2L)
 #'     pred = out$predictions
 #'   }
 #' }
@@ -231,7 +231,10 @@ asleep = function(
   abase_noconvert = reticulate::import("asleep", convert = FALSE)
 
   # call to make sure it exists and is imported before we call the get_sslnet function
-  abase_noconvert$sslmodel$get_sslnet()
+  if (verbose > 1) {
+    abase = reticulate::import("asleep", convert = TRUE)
+    print(abase$sslmodel$get_sslnet())
+  }
   # raw_data_path = tempfile(fileext = "raw.csv")
   # info_data_path = tempfile(fileext = "info.json")
   # data2model_path = tempfile(fileext = "data2model.npy")
