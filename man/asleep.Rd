@@ -52,23 +52,19 @@ Run \code{asleep} Model on Data
   df = readr::read_csv(file)
   if (asleep_check()) {
     out = asleep(file = df)
-    st = out$step_times
+    st = out$predictions
   }
   if (requireNamespace("ggplot2", quietly = TRUE) &&
       requireNamespace("tidyr", quietly = TRUE) &&
       requireNamespace("dplyr", quietly = TRUE)) {
-    dat = df[10000:12000,] \%>\%
-      dplyr::select(-annotation) \%>\%
+    d = st[1:250,] \%>\% dplyr::mutate(time = lubridate::as_datetime(time))
+    raw = df \%>\% dplyr::filter(time >= min(d$time) & time <= max(d$time))
+    dat = raw \%>\%
       tidyr::gather(axis, value, -time)
-    st = st \%>\%
-      dplyr::mutate(time = lubridate::as_datetime(time)) \%>\%
-      dplyr::as_tibble()
-    st = st \%>\%
-      dplyr::filter(time >= min(dat$time) & time <= max(dat$time))
-    dat \%>\%
-      ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
-      ggplot2::geom_line() +
-      ggplot2::geom_vline(data = st, ggplot2::aes(xintercept = time))
+    #dat \%>\%
+    #   ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
+    #   ggplot2::geom_line() +
+    #   ggplot2::geom_segment(data = d, ggplot2::aes(xintercept = time))
   }
 
 }
