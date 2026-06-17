@@ -5,8 +5,10 @@
 #' @export
 #' @rdname asleep_setup
 #' @examples
-#' if (have_asleep()) {
-#'    asleep_version()
+#' \donttest{
+#'   if (have_asleep()) {
+#'      asleep_version()
+#'   }
 #' }
 have_asleep = function() {
   reticulate::py_module_available("asleep")
