@@ -15,12 +15,21 @@ cleanup_uv_lock_files = function(paths = c(".", tempdir(), dirname(tempdir()))) 
   paths = paths[dir.exists(paths)]
 
   lock_files = unlist(lapply(paths, function(path) {
-    list.files(
-      path = path,
-      pattern = "^uv.*[.]lock$",
-      full.names = TRUE,
-      recursive = TRUE,
-      include.dirs = FALSE
+    c(
+      list.files(
+        path = path,
+        pattern = "^uv.*[.]lock$",
+        full.names = TRUE,
+        recursive = TRUE,
+        include.dirs = FALSE
+      ),
+      list.files(
+        path = path,
+        pattern = "^torch-shm-dir.*",
+        full.names = TRUE,
+        recursive = TRUE,
+        include.dirs = FALSE
+      ),
     )
   }))
   lock_files = unique(lock_files[file.exists(lock_files)])
