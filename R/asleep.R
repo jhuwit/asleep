@@ -113,7 +113,6 @@ summarize_daily_sleep = function(sdf) {
 #' the current device time. e.g. +1 or -1
 #' @param report_light_and_temp If true, it adds mean temp, and light columns to the predictions
 #' @param force_download force a download of the model, passed to [sl_download_models()]
-#'
 #' @returns A list of outputs, including summaries, paths, and dataframes.
 #' @export
 #'
@@ -196,7 +195,7 @@ asleep = function(
   argparse = reticulate::import("argparse", convert = FALSE)
   args <- argparse$Namespace
   args$outdir = outdir
-  args$force_download = FALSE
+  args$force_download = force_download
   args$force_run = FALSE
   args$remove_intermediate_files = FALSE
   args$report_light_and_temp = report_light_and_temp
@@ -353,6 +352,16 @@ asleep = function(
     message("Detecting sleep windows")
   }
   get_sleep_windows = abase_noconvert$get_sleep$get_sleep_windows
+  if (verbose > 1) {
+    message("args$outdir", args$outdir)
+    ssl_sleep_path = file.path(args$outdir, "ssl_sleep.npy")
+    message("ssl_sleep_path: ", ssl_sleep_path, ", exists:",
+            file.exists(ssl_sleep_path))
+    message("data2model")
+    message(paste(utils::capture.output(print(data2model)), collapse = "\n"))
+    message("non_wear")
+    message(paste(utils::capture.output(print(non_wear)), collapse = "\n"))
+  }
   out_windows = get_sleep_windows(data2model, times, non_wear, args)
   rm(list = c("data2model", "non_wear"))
   binary_y = out_windows[[0]]
