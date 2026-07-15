@@ -208,10 +208,11 @@ asleep = function(
   }
   args$model_weight_path = model_weight_path
   if (is.null(local_repo_path)) {
-    args$local_repo_path = ""
+    local_repo_path = ""
   } else {
-    args$local_repo_path = normalizePath(path.expand(local_repo_path))
+    local_repo_path = normalizePath(path.expand(local_repo_path))
   }
+  args$local_repo_path = local_repo_path
   args$min_wear = min_wear
   args$time_shift = time_shift
 
@@ -246,7 +247,7 @@ asleep = function(
     message("Downloading models if not already present")
   }
   sl_download_models(force_download = force_download)
-  if (!nzchar(args$local_repo_path) || !nzchar(args$model_weight_path)) {
+  if (!nzchar(local_repo_path) || !nzchar(model_weight_path)) {
     asleep_pkg_dir = tryCatch(
       reticulate::py_to_r(abase_noconvert$`__path__`[[0]]),
       error = function(e) NA_character_
@@ -257,14 +258,16 @@ asleep = function(
       cached_weight_path = file.path(
         torch_hub_cache, "checkpoints", "sleepnet_apr_16_2024.mdl"
       )
-      if (!nzchar(args$local_repo_path) && dir.exists(cached_repo_path)) {
-        args$local_repo_path = cached_repo_path
+      if (!nzchar(local_repo_path) && dir.exists(cached_repo_path)) {
+        local_repo_path = cached_repo_path
       }
-      if (!nzchar(args$model_weight_path) && file.exists(cached_weight_path)) {
-        args$model_weight_path = cached_weight_path
+      if (!nzchar(model_weight_path) && file.exists(cached_weight_path)) {
+        model_weight_path = cached_weight_path
       }
     }
   }
+  args$local_repo_path = local_repo_path
+  args$model_weight_path = model_weight_path
 
   # raw_data_path = tempfile(fileext = "raw.csv")
   # info_data_path = tempfile(fileext = "info.json")
@@ -372,8 +375,8 @@ asleep = function(
   }
   get_sleep_windows = abase_noconvert$get_sleep$get_sleep_windows
   if (verbose > 1) {
-    message("args$outdir", args$outdir)
-    ssl_sleep_path = file.path(args$outdir, "ssl_sleep.npy")
+    message("args$outdir", outdir)
+    ssl_sleep_path = file.path(outdir, "ssl_sleep.npy")
     message("ssl_sleep_path: ", ssl_sleep_path, ", exists:",
             file.exists(ssl_sleep_path))
     message("data2model")
@@ -411,8 +414,8 @@ asleep = function(
     message("Running SleepNet")
   }
   np = reticulate::import("numpy", convert = FALSE)
-  sleepnet_x_path = file.path(args$outdir, "X.npy")
-  sleepnet_pid_path = file.path(args$outdir, "npid.npy")
+  sleepnet_x_path = file.path(outdir, "X.npy")
+  sleepnet_pid_path = file.path(outdir, "npid.npy")
   np$save(sleepnet_x_path, master_acc)
   np$save(sleepnet_pid_path, master_npids)
   if (verbose > 1) {
@@ -430,14 +433,14 @@ asleep = function(
       "releases/download/0.4.9/sleepnet_apr_16_2024.mdl"
     )
     sleepnet_artifacts = c(
-      ssl_sleep = file.path(args$outdir, "ssl_sleep.npy"),
-      y_pred = file.path(args$outdir, "y_pred.npy"),
-      pred_prob = file.path(args$outdir, "pred_prob.npy"),
-      x_npy = file.path(args$outdir, "X.npy"),
-      x_npy_gz = file.path(args$outdir, "X.npy.gz"),
-      npid = file.path(args$outdir, "npid.npy")
+      ssl_sleep = file.path(outdir, "ssl_sleep.npy"),
+      y_pred = file.path(outdir, "y_pred.npy"),
+      pred_prob = file.path(outdir, "pred_prob.npy"),
+      x_npy = file.path(outdir, "X.npy"),
+      x_npy_gz = file.path(outdir, "X.npy.gz"),
+      npid = file.path(outdir, "npid.npy")
     )
-    message("SleepNet outdir: ", args$outdir)
+    message("SleepNet outdir: ", outdir)
     if (!is.na(ssl_model_path)) {
       message(
         "Upstream ssl model path: ", ssl_model_path,
@@ -455,9 +458,9 @@ asleep = function(
   out_sleep = start_sleep_net(
     master_acc,
     master_npids,
-    args$outdir,
-    args$model_weight_path,
-    local_repo_path = args$local_repo_path,
+    outdir,
+    model_weight_path,
+    local_repo_path = local_repo_path,
     device_id = args$pytorch_device
   )
   y_pred = out_sleep[[0]]
