@@ -16,10 +16,11 @@
 #' from that participant as an example.
 #'
 #' @examples
-#'
-#' file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
-#' if (asleep_check()) {
-#'   out = sl_read(file)
+#' \donttest{
+#'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
+#'   if (asleep_check()) {
+#'     out = sl_read(file, resample_hz = FALSE)
+#'   }
 #' }
 sl_read = function(
     file,
@@ -43,6 +44,7 @@ sl_read = function(
   assertthat::assert_that(
     assertthat::is.readable(file),
     is.null(resample_hz) ||
+      assertthat::is.flag(resample_hz) ||
       assertthat::is.count(resample_hz) ||
       (assertthat::is.string(resample_hz) && resample_hz == "uniform")
   )
@@ -52,8 +54,8 @@ sl_read = function(
   )
   if (keep_pandas) {
     out = list(
-      data = out[[0]],
-      info = reticulate::py_to_r(out[1])
+      data = reticulate::py_get_item(out, 0L),
+      info = reticulate::py_to_r(reticulate::py_get_item(out, 1L))
     )
   }
   names(out) = c("data", "info")

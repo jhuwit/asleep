@@ -29,9 +29,10 @@ where we took the first 180,000 rows, the first 30 minutes of data
 from that participant as an example.
 }
 \examples{
-
+\donttest{
 file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 if (asleep_check()) {
-  out = sl_read(file)
+  out = sl_read(file, resample_hz = FALSE)
+}
 }
 }
