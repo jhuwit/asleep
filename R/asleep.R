@@ -233,6 +233,7 @@ asleep = function(
   }
   #
   file = normalizePath(path.expand(file), mustWork = TRUE)
+  stopifnot(file.exists(file))
   args$filepath = file
 
   abase_noconvert = reticulate::import("asleep", convert = FALSE)

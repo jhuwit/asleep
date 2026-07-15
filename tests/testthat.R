@@ -29,7 +29,7 @@ cleanup_uv_lock_files = function(paths = c(".", tempdir(), dirname(tempdir()))) 
         full.names = TRUE,
         recursive = TRUE,
         include.dirs = FALSE
-      ),
+      )
     )
   }))
   lock_files = unique(lock_files[file.exists(lock_files)])
