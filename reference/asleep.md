@@ -12,7 +12,8 @@ asleep(
   time_shift = "0",
   report_light_and_temp = FALSE,
   pytorch_device = c("cpu", "cuda:0"),
-  verbose = TRUE
+  verbose = TRUE,
+  force_download = FALSE
 )
 ```
 
@@ -49,6 +50,11 @@ asleep(
 
   print diagnostic messages
 
+- force_download:
+
+  force a download of the model, passed to
+  [`sl_download_models()`](https://jhuwit.github.io/asleep/reference/sl_download_models.md)
+
 ## Value
 
 A list of outputs, including summaries, paths, and dataframes.
@@ -59,7 +65,7 @@ A list of outputs, including summaries, paths, and dataframes.
 # \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   if (asleep_check()) {
-    sl_download_models()
+    sl_download_models(force_download = TRUE)
     out = asleep(file = file, verbose = 2L)
     pred = out$predictions
   }
