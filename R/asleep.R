@@ -121,8 +121,12 @@ summarize_daily_sleep = function(sdf) {
 #' \donttest{
 #'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 #'   if (asleep_check()) {
-#'     sl_download_models(force_download = TRUE)
-#'     out = asleep(file = file, verbose = 2L)
+#'     sl_download_models()
+#'     out = try({asleep(file = file, verbose = 2L)})
+#'     if (inherits(out, "try-error")) {
+#'       message(out)
+#'       reticulate::py_last_error()
+#'     }
 #'     pred = out$predictions
 #'   }
 #' }
