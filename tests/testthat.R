@@ -9,3 +9,26 @@ library(testthat)
 library(asleep)
 
 testthat::test_check("asleep")
+
+cleanup_uv_lock_files = function(paths = c(".", tempdir(), dirname(tempdir()))) {
+  paths = unique(normalizePath(paths, winslash = "/", mustWork = FALSE))
+  paths = paths[dir.exists(paths)]
+
+  lock_files = unlist(lapply(paths, function(path) {
+    list.files(
+      path = path,
+      pattern = "^uv.*[.]lock$",
+      full.names = TRUE,
+      recursive = TRUE,
+      include.dirs = FALSE
+    )
+  }))
+  lock_files = unique(lock_files[file.exists(lock_files)])
+
+  if (length(lock_files) > 0) {
+    invisible(file.remove(lock_files))
+  } else {
+    invisible(logical())
+  }
+}
+cleanup_uv_lock_files()
