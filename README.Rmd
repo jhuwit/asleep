@@ -17,7 +17,7 @@ library(reticulate)
 options(digits.secs = 3)
 ```
 
-# stepcount
+# asleep
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/jhuwit/asleep/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/asleep/actions/workflows/R-CMD-check.yaml)

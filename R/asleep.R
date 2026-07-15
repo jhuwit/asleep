@@ -231,6 +231,9 @@ asleep = function(
   #   abase = reticulate::import("asleep", convert = TRUE)
   #   print(abase$sslmodel$get_sslnet())
   # }
+  if (verbose > 1) {
+    message("Downloading models if not already present")
+  }
   abase_noconvert$get_sleep$download_models()
 
   # raw_data_path = tempfile(fileext = "raw.csv")
