@@ -67,3 +67,4 @@ testthat::test_that("summarize_daily_sleep creates overall and grouped summaries
   )
   testthat::expect_false(any(grepl("wear_duration_H", names(out))))
 })
+

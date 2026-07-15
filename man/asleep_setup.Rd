@@ -19,7 +19,9 @@ A logical value indicating whether the \code{asleep} Python module is available.
 Check the \code{asleep} Python Module
 }
 \examples{
-if (have_asleep()) {
-   asleep_version()
+\donttest{
+  if (have_asleep()) {
+     asleep_version()
+  }
 }
 }
