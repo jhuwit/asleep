@@ -20,8 +20,10 @@ available.
 ## Examples
 
 ``` r
-if (have_asleep()) {
-   asleep_version()
-}
+# \donttest{
+  if (have_asleep()) {
+     asleep_version()
+  }
 #> [1] "0.4.18"
+# }
 ```
