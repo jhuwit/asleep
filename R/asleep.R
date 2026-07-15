@@ -246,6 +246,25 @@ asleep = function(
     message("Downloading models if not already present")
   }
   sl_download_models(force_download = force_download)
+  if (!nzchar(args$local_repo_path) || !nzchar(args$model_weight_path)) {
+    asleep_pkg_dir = tryCatch(
+      reticulate::py_to_r(abase_noconvert$`__path__`[[0]]),
+      error = function(e) NA_character_
+    )
+    if (!is.na(asleep_pkg_dir)) {
+      torch_hub_cache = file.path(asleep_pkg_dir, "torch_hub_cache")
+      cached_repo_path = file.path(torch_hub_cache, "OxWearables_asleep_main")
+      cached_weight_path = file.path(
+        torch_hub_cache, "checkpoints", "sleepnet_apr_16_2024.mdl"
+      )
+      if (!nzchar(args$local_repo_path) && dir.exists(cached_repo_path)) {
+        args$local_repo_path = cached_repo_path
+      }
+      if (!nzchar(args$model_weight_path) && file.exists(cached_weight_path)) {
+        args$model_weight_path = cached_weight_path
+      }
+    }
+  }
 
   # raw_data_path = tempfile(fileext = "raw.csv")
   # info_data_path = tempfile(fileext = "info.json")
