@@ -112,6 +112,7 @@ summarize_daily_sleep = function(sdf) {
 #' @param time_shift The number hours to shift forward or backward from
 #' the current device time. e.g. +1 or -1
 #' @param report_light_and_temp If true, it adds mean temp, and light columns to the predictions
+#' @param force_download force a download of the model, passed to [sl_download_models()]
 #'
 #' @returns A list of outputs, including summaries, paths, and dataframes.
 #' @export
@@ -120,7 +121,7 @@ summarize_daily_sleep = function(sdf) {
 #' \donttest{
 #'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 #'   if (asleep_check()) {
-#'     sl_download_models()
+#'     sl_download_models(force_download = TRUE)
 #'     out = asleep(file = file, verbose = 2L)
 #'     pred = out$predictions
 #'   }
@@ -155,7 +156,8 @@ asleep = function(
     time_shift = "0",
     report_light_and_temp = FALSE,
     pytorch_device = c("cpu", "cuda:0"),
-    verbose = TRUE
+    verbose = TRUE,
+    force_download = FALSE
 ) {
 
   model_path = NULL
@@ -234,7 +236,7 @@ asleep = function(
   if (verbose > 1) {
     message("Downloading models if not already present")
   }
-  abase_noconvert$get_sleep$download_models()
+  sl_download_models(force_download = force_download)
 
   # raw_data_path = tempfile(fileext = "raw.csv")
   # info_data_path = tempfile(fileext = "info.json")

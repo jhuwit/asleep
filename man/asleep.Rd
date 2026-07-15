@@ -11,7 +11,8 @@ asleep(
   time_shift = "0",
   report_light_and_temp = FALSE,
   pytorch_device = c("cpu", "cuda:0"),
-  verbose = TRUE
+  verbose = TRUE,
+  force_download = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ the current device time. e.g. +1 or -1}
 \item{pytorch_device}{device to use for prediction for PyTorch.}
 
 \item{verbose}{print diagnostic messages}
+
+\item{force_download}{force a download of the model, passed to \code{\link[=sl_download_models]{sl_download_models()}}}
 }
 \value{
 A list of outputs, including summaries, paths, and dataframes.
@@ -42,7 +45,7 @@ Run \code{asleep} Model on Data
 \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   if (asleep_check()) {
-    sl_download_models()
+    sl_download_models(force_download = TRUE)
     out = asleep(file = file, verbose = 2L)
     pred = out$predictions
   }
