@@ -44,14 +44,16 @@ Run \code{asleep} Model on Data
 \examples{
 \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
+  stopifnot(file.exists(file))
   if (asleep_check()) {
     sl_download_models()
     out = try({asleep(file = file, verbose = 2L)})
     if (inherits(out, "try-error")) {
       message(out)
       reticulate::py_last_error()
+    } else {
+      pred = out$predictions
     }
-    pred = out$predictions
   }
 }
 \dontrun{

@@ -120,14 +120,16 @@ summarize_daily_sleep = function(sdf) {
 #' @examples
 #' \donttest{
 #'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
+#'   stopifnot(file.exists(file))
 #'   if (asleep_check()) {
 #'     sl_download_models()
 #'     out = try({asleep(file = file, verbose = 2L)})
 #'     if (inherits(out, "try-error")) {
 #'       message(out)
 #'       reticulate::py_last_error()
+#'     } else {
+#'       pred = out$predictions
 #'     }
-#'     pred = out$predictions
 #'   }
 #' }
 #' \dontrun{
@@ -226,6 +228,9 @@ asleep = function(
     }, add = TRUE)
   }
   file = file[[1]]
+  if (verbose > 1) {
+    message("File is:", file)
+  }
   #
   file = normalizePath(path.expand(file), mustWork = TRUE)
   args$filepath = file
