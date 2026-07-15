@@ -391,6 +391,11 @@ asleep = function(
   if (verbose) {
     message("Running SleepNet")
   }
+  np = reticulate::import("numpy", convert = FALSE)
+  sleepnet_x_path = file.path(args$outdir, "X.npy")
+  sleepnet_pid_path = file.path(args$outdir, "npid.npy")
+  np$save(sleepnet_x_path, master_acc)
+  np$save(sleepnet_pid_path, master_npids)
   if (verbose > 1) {
     asleep_pkg_dir = tryCatch(
       reticulate::py_to_r(abase_noconvert$`__path__`[[0]]),
@@ -460,7 +465,6 @@ asleep = function(
     sleepnet_output[time_filter] = sleepnet_pred
   }
 
-  np = reticulate::import("numpy", convert = FALSE)
   SLEEPNET_BINARY_LABELS = abase_noconvert$macros$SLEEPNET_BINARY_LABELS
   SLEEPNET_LABELS = abase_noconvert$macros$SLEEPNET_LABELS
   SLEEPNET_THRE_CLASS_LABELS = abase_noconvert$macros$SLEEPNET_THRE_CLASS_LABELS
