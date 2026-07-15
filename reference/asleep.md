@@ -66,6 +66,7 @@ A list of outputs, including summaries, paths, and dataframes.
 #> Downloading uv...
 #> Done!
 #> Checking Data
+#> Downloading models if not already present
 #> Parsing raw data
 #> Transforming data for model input
 #> Data shape for data2model: (480, 3, 900)

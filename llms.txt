@@ -1,4 +1,4 @@
-# stepcount
+# asleep
 
 The goal of `asleep` is to wrap up the
 <https://github.com/OxWearables/asleep> algorithm.
