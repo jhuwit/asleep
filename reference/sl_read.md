@@ -39,9 +39,10 @@ that participant as an example.
 ## Examples
 
 ``` r
-
+# \donttest{
 file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 if (asleep_check()) {
-  out = sl_read(file)
+  out = sl_read(file, resample_hz = FALSE)
 }
+# }
 ```
