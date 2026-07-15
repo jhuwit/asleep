@@ -80,11 +80,128 @@ A list of outputs, including summaries, paths, and dataframes.
 #> Checking Data
 #> File is:/home/runner/work/_temp/Library/asleep/extdata/example_sleep.csv.gz
 #> Downloading models if not already present
-#> Error in asleep(file = file, verbose = 2L) : 
-#>   environments cannot be coerced to other types
-#> Error in asleep(file = file, verbose = 2L) : 
-#>   environments cannot be coerced to other types
-#> NULL
+#> Parsing raw data
+#> Transforming data for model input
+#> Data shape for data2model: (480, 3, 900)
+#> Data shape for times: (480,)
+#> Data shape for nonwear: (480,)
+#> Detecting sleep windows
+#> args$outdir/tmp/Rtmplb0OwI/file1a806e5c6a46
+#> ssl_sleep_path: /tmp/Rtmplb0OwI/file1a806e5c6a46/ssl_sleep.npy, exists:FALSE
+#> data2model
+#> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,
+#>          -0.69115383, -0.6903333 ],
+#>         [ 0.413     ,  0.419     ,  0.42884615, ...,  0.42430774,
+#>           0.42807678,  0.44416667],
+#>         [-0.54      , -0.56166666, -0.57858971, ..., -0.55976925,
+#>          -0.59274354, -0.61691666]],
+#> 
+#>        [[-0.689     , -0.61469231, -0.58484615, ..., -0.62961541,
+#>          -0.62735884, -0.62341669],
+#>         [ 0.469     ,  0.42923077,  0.43343586, ...,  0.466     ,
+#>           0.46      ,  0.45547223],
+#>         [-0.648     , -0.55720514, -0.58207693, ..., -0.57223075,
+#>          -0.57330765, -0.56950002]],
+#> 
+#>        [[-0.625     , -0.62246154, -0.63430771, ..., -0.73707666,
+#>          -0.73812797, -0.74825001],
+#>         [ 0.457     ,  0.45953846,  0.46923078, ...,  0.18476925,
+#>           0.19420501,  0.20291666],
+#>         [-0.56      , -0.548     , -0.56430771, ..., -0.64523075,
+#>          -0.6363847 , -0.65150002]],
+#> 
+#>        ...,
+#> 
+#>        [[-0.032     , -0.032     , -0.032     , ..., -0.032     ,
+#>          -0.032     , -0.032     ],
+#>         [-0.123     , -0.123     , -0.123     , ..., -0.123     ,
+#>          -0.123     , -0.123     ],
+#>         [-0.988     , -0.988     , -0.988     , ..., -0.988     ,
+#>          -0.988     , -0.988     ]],
+#> 
+#>        [[-0.032     , -0.032     , -0.032     , ..., -0.032     ,
+#>          -0.032     , -0.032     ],
+#>         [-0.123     , -0.123     , -0.123     , ..., -0.123     ,
+#>          -0.123     , -0.123     ],
+#>         [-0.988     , -0.988     , -0.988     , ..., -0.988     ,
+#>          -0.988     , -0.988     ]],
+#> 
+#>        [[-0.032     , -0.032     , -0.032     , ..., -0.032     ,
+#>          -0.032     , -0.032     ],
+#>         [-0.123     , -0.123     , -0.123     , ..., -0.123     ,
+#>          -0.123     , -0.123     ],
+#>         [-0.988     , -0.988     , -0.988     , ..., -0.988     ,
+#>          -0.988     , -0.988     ]]])
+#> non_wear
+#> array([False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False, False, False, False, False, False, False,
+#>        False, False, False])
+#> Running SleepNet
+#> SleepNet outdir: /tmp/Rtmplb0OwI/file1a806e5c6a46
+#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/y4mSPeaosUuqIEFP/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
+#> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl
+#> SleepNet artifact ssl_sleep: /tmp/Rtmplb0OwI/file1a806e5c6a46/ssl_sleep.npy, exists: TRUE
+#> SleepNet artifact y_pred: /tmp/Rtmplb0OwI/file1a806e5c6a46/y_pred.npy, exists: FALSE
+#> SleepNet artifact pred_prob: /tmp/Rtmplb0OwI/file1a806e5c6a46/pred_prob.npy, exists: FALSE
+#> SleepNet artifact x_npy: /tmp/Rtmplb0OwI/file1a806e5c6a46/X.npy, exists: TRUE
+#> SleepNet artifact x_npy_gz: /tmp/Rtmplb0OwI/file1a806e5c6a46/X.npy.gz, exists: FALSE
+#> SleepNet artifact npid: /tmp/Rtmplb0OwI/file1a806e5c6a46/npid.npy, exists: TRUE
+#> Mapping SleepNet predictions back to original time series
+#> Generating predictions dataframe
+#> Generating sleep block df and indicate the longest block per day
+#> Generating daily summary statistics
+#> Creating outputs
 # }
 if (FALSE) { # \dontrun{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
