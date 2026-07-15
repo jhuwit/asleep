@@ -64,14 +64,21 @@ A list of outputs, including summaries, paths, and dataframes.
 ``` r
 # \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
+  stopifnot(file.exists(file))
   if (asleep_check()) {
-    sl_download_models(force_download = TRUE)
-    out = asleep(file = file, verbose = 2L)
-    pred = out$predictions
+    sl_download_models()
+    out = try({asleep(file = file, verbose = 2L)})
+    if (inherits(out, "try-error")) {
+      message(out)
+      reticulate::py_last_error()
+    } else {
+      pred = out$predictions
+    }
   }
 #> Downloading uv...
 #> Done!
 #> Checking Data
+#> File is:/home/runner/work/_temp/Library/asleep/extdata/example_sleep.csv.gz
 #> Downloading models if not already present
 #> Parsing raw data
 #> Transforming data for model input
