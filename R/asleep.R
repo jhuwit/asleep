@@ -391,6 +391,43 @@ asleep = function(
   if (verbose) {
     message("Running SleepNet")
   }
+  if (verbose > 1) {
+    asleep_pkg_dir = tryCatch(
+      reticulate::py_to_r(abase_noconvert$`__path__`[[0]]),
+      error = function(e) NA_character_
+    )
+    ssl_model_path = if (is.na(asleep_pkg_dir)) {
+      NA_character_
+    } else {
+      file.path(asleep_pkg_dir, "ssl.joblib.lzma")
+    }
+    sleepnet_weight_url = paste0(
+      "https://github.com/OxWearables/asleep/",
+      "releases/download/0.4.9/sleepnet_apr_16_2024.mdl"
+    )
+    sleepnet_artifacts = c(
+      ssl_sleep = file.path(args$outdir, "ssl_sleep.npy"),
+      y_pred = file.path(args$outdir, "y_pred.npy"),
+      pred_prob = file.path(args$outdir, "pred_prob.npy"),
+      x_npy = file.path(args$outdir, "X.npy"),
+      x_npy_gz = file.path(args$outdir, "X.npy.gz"),
+      npid = file.path(args$outdir, "npid.npy")
+    )
+    message("SleepNet outdir: ", args$outdir)
+    if (!is.na(ssl_model_path)) {
+      message(
+        "Upstream ssl model path: ", ssl_model_path,
+        ", exists: ", file.exists(ssl_model_path)
+      )
+    }
+    message("SleepNet weight URL: ", sleepnet_weight_url)
+    for (nm in names(sleepnet_artifacts)) {
+      message(
+        "SleepNet artifact ", nm, ": ", sleepnet_artifacts[[nm]],
+        ", exists: ", file.exists(sleepnet_artifacts[[nm]])
+      )
+    }
+  }
   out_sleep = start_sleep_net(
     master_acc,
     master_npids,
