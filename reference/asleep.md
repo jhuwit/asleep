@@ -86,8 +86,8 @@ A list of outputs, including summaries, paths, and dataframes.
 #> Data shape for times: (480,)
 #> Data shape for nonwear: (480,)
 #> Detecting sleep windows
-#> args$outdir/tmp/Rtmpr7MGxG/file19d5d17f1d6
-#> ssl_sleep_path: /tmp/Rtmpr7MGxG/file19d5d17f1d6/ssl_sleep.npy, exists:FALSE
+#> args$outdir/tmp/RtmpcaFzMt/file1a005d456583
+#> ssl_sleep_path: /tmp/RtmpcaFzMt/file1a005d456583/ssl_sleep.npy, exists:FALSE
 #> data2model
 #> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,
 #>          -0.69115383, -0.6903333 ],
@@ -188,6 +188,15 @@ A list of outputs, including summaries, paths, and dataframes.
 #>        False, False, False, False, False, False, False, False, False,
 #>        False, False, False])
 #> Running SleepNet
+#> SleepNet outdir: /tmp/RtmpcaFzMt/file1a005d456583
+#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/O7YW-Aplqz7pXV7i/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
+#> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl
+#> SleepNet artifact ssl_sleep: /tmp/RtmpcaFzMt/file1a005d456583/ssl_sleep.npy, exists: TRUE
+#> SleepNet artifact y_pred: /tmp/RtmpcaFzMt/file1a005d456583/y_pred.npy, exists: FALSE
+#> SleepNet artifact pred_prob: /tmp/RtmpcaFzMt/file1a005d456583/pred_prob.npy, exists: FALSE
+#> SleepNet artifact x_npy: /tmp/RtmpcaFzMt/file1a005d456583/X.npy, exists: FALSE
+#> SleepNet artifact x_npy_gz: /tmp/RtmpcaFzMt/file1a005d456583/X.npy.gz, exists: FALSE
+#> SleepNet artifact npid: /tmp/RtmpcaFzMt/file1a005d456583/npid.npy, exists: FALSE
 #> Mapping SleepNet predictions back to original time series
 #> Generating predictions dataframe
 #> Generating sleep block df and indicate the longest block per day
