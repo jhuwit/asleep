@@ -8,6 +8,11 @@
 library(testthat)
 library(asleep)
 
+asleep:::cleanup_uv_lock_files(
+  c(".", tempdir(), dirname(tempdir()))
+)
 testthat::test_check("asleep")
 
-asleep:::cleanup_uv_lock_files()
+asleep:::cleanup_uv_lock_files(
+  c(".", tempdir(), dirname(tempdir()))
+)
