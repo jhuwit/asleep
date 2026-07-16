@@ -164,6 +164,7 @@ asleep = function(
     verbose = TRUE,
     force_download = FALSE
 ) {
+  on.exit(cleanup_uv_lock_files(), add = TRUE)
 
   model_path = NULL
   local_repo_path = NULL

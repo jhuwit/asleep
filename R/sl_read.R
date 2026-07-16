@@ -27,6 +27,7 @@ sl_read = function(
     resample_hz = "uniform",
     keep_pandas = FALSE
 ) {
+  on.exit(cleanup_uv_lock_files(), add = TRUE)
 
   if (keep_pandas) {
     sc = asleep_base_noconvert()
