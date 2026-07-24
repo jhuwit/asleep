@@ -8,6 +8,9 @@ remove_file_info = function(result) {
 #   "ssl.joblib.lzma")
 
 testthat::test_that("asleep model works", {
+  # testthat::skip_if_not(
+  #   identical(Sys.getenv("ASLEEP_RUN_INTEGRATION_TESTS"), "true")
+  # )
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   testthat::skip_if_not(suppressWarnings(asleep_check()))
   if (suppressWarnings(asleep_check())) {
@@ -67,4 +70,3 @@ testthat::test_that("summarize_daily_sleep creates overall and grouped summaries
   )
   testthat::expect_false(any(grepl("wear_duration_H", names(out))))
 })
-

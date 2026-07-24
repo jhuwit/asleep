@@ -8,9 +8,12 @@
 \usage{
 have_asleep()
 
-asleep_check()
+asleep_check(...)
 
-asleep_version()
+asleep_version(...)
+}
+\arguments{
+\item{...}{additional arguments to pass to \link[reticulate:py_list_packages]{reticulate::py_list_packages}}
 }
 \value{
 A logical value indicating whether the \code{asleep} Python module is available.

@@ -65,7 +65,6 @@ Run \code{asleep} Model on Data
   if (asleep_check()) {
     out = asleep(file = df)
     st = out$predictions
-  }
   if (requireNamespace("ggplot2", quietly = TRUE) &&
       requireNamespace("tidyr", quietly = TRUE) &&
       requireNamespace("dplyr", quietly = TRUE)) {
@@ -93,6 +92,6 @@ Run \code{asleep} Model on Data
        ) +
        ggplot2::labs(linetype = "Sleep/wake")
   }
-
+ }
 }
 }

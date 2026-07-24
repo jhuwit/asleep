@@ -138,7 +138,6 @@ summarize_daily_sleep = function(sdf) {
 #'   if (asleep_check()) {
 #'     out = asleep(file = df)
 #'     st = out$predictions
-#'   }
 #'   if (requireNamespace("ggplot2", quietly = TRUE) &&
 #'       requireNamespace("tidyr", quietly = TRUE) &&
 #'       requireNamespace("dplyr", quietly = TRUE)) {
@@ -166,7 +165,7 @@ summarize_daily_sleep = function(sdf) {
 #'        ) +
 #'        ggplot2::labs(linetype = "Sleep/wake")
 #'   }
-#'
+#'  }
 #' }
 asleep = function(
     file,
