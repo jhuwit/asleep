@@ -46,6 +46,7 @@
 <span>  time_shift <span class="op">=</span> <span class="st">"0"</span>,</span>
 <span>  report_light_and_temp <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  pytorch_device <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cpu"</span>, <span class="st">"cuda:0"</span><span class="op">)</span>,</span>
+<span>  sample_rate <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  force_download <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -80,6 +81,10 @@ the current device time. e.g. +1 or -1</p></dd>
 
 <dt id="arg-pytorch-device">pytorch_device<a class="anchor" aria-label="anchor" href="#arg-pytorch-device"></a></dt>
 <dd><p>device to use for prediction for PyTorch.</p></dd>
+
+
+<dt id="arg-sample-rate">sample_rate<a class="anchor" aria-label="anchor" href="#arg-sample-rate"></a></dt>
+<dd><p>Sample rate for the data, currently not used.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -121,8 +126,8 @@ the current device time. e.g. +1 or -1</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for times: (480,)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for nonwear: (480,)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Detecting sleep windows</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> args$outdir/tmp/RtmpP5sfl1/file1a2f4f088c26</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ssl_sleep_path: /tmp/RtmpP5sfl1/file1a2f4f088c26/ssl_sleep.npy, exists:FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> args$outdir/tmp/RtmpKjO9G5/file1aae42c8f09c</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ssl_sleep_path: /tmp/RtmpKjO9G5/file1aae42c8f09c/ssl_sleep.npy, exists:FALSE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> data2model</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>          -0.69115383, -0.6903333 ],</span>
@@ -223,42 +228,80 @@ the current device time. e.g. +1 or -1</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>        False, False, False, False, False, False, False, False, False,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>        False, False, False])</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running SleepNet</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet outdir: /tmp/RtmpP5sfl1/file1a2f4f088c26</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/6bGeFlLgiA02_TsO/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet outdir: /tmp/RtmpKjO9G5/file1aae42c8f09c</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/aXi79acqb1qlVf9H/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact ssl_sleep: /tmp/RtmpP5sfl1/file1a2f4f088c26/ssl_sleep.npy, exists: TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact y_pred: /tmp/RtmpP5sfl1/file1a2f4f088c26/y_pred.npy, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact pred_prob: /tmp/RtmpP5sfl1/file1a2f4f088c26/pred_prob.npy, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy: /tmp/RtmpP5sfl1/file1a2f4f088c26/X.npy, exists: TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy_gz: /tmp/RtmpP5sfl1/file1a2f4f088c26/X.npy.gz, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact npid: /tmp/RtmpP5sfl1/file1a2f4f088c26/npid.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact ssl_sleep: /tmp/RtmpKjO9G5/file1aae42c8f09c/ssl_sleep.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact y_pred: /tmp/RtmpKjO9G5/file1aae42c8f09c/y_pred.npy, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact pred_prob: /tmp/RtmpKjO9G5/file1aae42c8f09c/pred_prob.npy, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy: /tmp/RtmpKjO9G5/file1aae42c8f09c/X.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy_gz: /tmp/RtmpKjO9G5/file1aae42c8f09c/X.npy.gz, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact npid: /tmp/RtmpKjO9G5/file1aae42c8f09c/npid.npy, exists: TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping SleepNet predictions back to original time series</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating predictions dataframe</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating sleep block df and indicate the longest block per day</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating daily summary statistics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Creating outputs</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span>  <span class="va">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example_sleep.csv.gz"</span>, package <span class="op">=</span> <span class="st">"asleep"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">df</span> <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">432000</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">4</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">dbl</span>  (3): x, y, z</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">dttm</span> (1): time</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
 <span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="asleep_setup.html">asleep_check</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>    <span class="va">out</span> <span class="op">=</span> <span class="fu">asleep</span><span class="op">(</span>file <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="va">st</span> <span class="op">=</span> <span class="va">out</span><span class="op">$</span><span class="va">predictions</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking Data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing file to CSV...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Parsing raw data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Transforming data for model input</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for data2model: (480, 3, 900)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for times: (480,)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for nonwear: (480,)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Detecting sleep windows</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running SleepNet</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping SleepNet predictions back to original time series</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating predictions dataframe</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating sleep block df and indicate the longest block per day</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Generating daily summary statistics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating outputs</span>
 <span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggplot2"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"tidyr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"dplyr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">d</span> <span class="op">=</span> <span class="va">st</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">250</span>,<span class="op">]</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html" class="external-link">as_datetime</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">d</span> <span class="op">=</span> <span class="va">st</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">250</span>,<span class="op">]</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        time <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html" class="external-link">as_datetime</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        time_end <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lead</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">time_end</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="va">raw</span> <span class="op">=</span> <span class="va">df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">time</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">time</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">time</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="va">dat</span> <span class="op">=</span> <span class="va">raw</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>      <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">gather</a></span><span class="op">(</span><span class="va">axis</span>, <span class="va">value</span>, <span class="op">-</span><span class="va">time</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="co">#dat %&gt;%</span></span></span>
-<span class="r-in"><span>    <span class="co">#   ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +</span></span></span>
-<span class="r-in"><span>    <span class="co">#   ggplot2::geom_line() +</span></span></span>
-<span class="r-in"><span>    <span class="co">#   ggplot2::geom_segment(data = d, ggplot2::aes(xintercept = time))</span></span></span>
+<span class="r-in"><span>    <span class="va">d</span> <span class="op">=</span> <span class="va">d</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>activity_y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">sleep_wake</span> <span class="op">==</span> <span class="st">"sleep"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">dat</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>       <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, colour <span class="op">=</span> <span class="va">axis</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>       <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_step</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>       <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>         data <span class="op">=</span> <span class="va">d</span>,</span></span>
+<span class="r-in"><span>         <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>           x <span class="op">=</span> <span class="va">time</span>, xend <span class="op">=</span> <span class="va">time_end</span>,</span></span>
+<span class="r-in"><span>           y <span class="op">=</span> <span class="va">activity_y</span>, yend <span class="op">=</span> <span class="va">activity_y</span>,</span></span>
+<span class="r-in"><span>           linetype <span class="op">=</span> <span class="va">sleep_wake</span></span></span>
+<span class="r-in"><span>         <span class="op">)</span>,</span></span>
+<span class="r-in"><span>         colour <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">1</span>, inherit.aes <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>       <span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>       <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="st">"Sleep/wake"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-plt img"><img src="asleep-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
