@@ -7,10 +7,17 @@ Check the `asleep` Python Module
 ``` r
 have_asleep()
 
-asleep_check()
+asleep_check(...)
 
-asleep_version()
+asleep_version(...)
 ```
+
+## Arguments
+
+- ...:
+
+  additional arguments to pass to
+  [reticulate::py_list_packages](https://rstudio.github.io/reticulate/reference/py_list_packages.html)
 
 ## Value
 
@@ -24,6 +31,6 @@ available.
   if (have_asleep()) {
      asleep_version()
   }
-#> [1] "0.4.18"
+#> [1] "0.5.0"
 # }
 ```
