@@ -11,6 +11,7 @@ asleep(
   time_shift = "0",
   report_light_and_temp = FALSE,
   pytorch_device = c("cpu", "cuda:0"),
+  sample_rate = NULL,
   verbose = TRUE,
   force_download = FALSE
 )
@@ -30,6 +31,8 @@ the current device time. e.g. +1 or -1}
 \item{report_light_and_temp}{If true, it adds mean temp, and light columns to the predictions}
 
 \item{pytorch_device}{device to use for prediction for PyTorch.}
+
+\item{sample_rate}{Sample rate for the data, currently not used.}
 
 \item{verbose}{print diagnostic messages}
 
@@ -56,7 +59,7 @@ Run \code{asleep} Model on Data
     }
   }
 }
-\dontrun{
+\donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   df = readr::read_csv(file)
   if (asleep_check()) {
@@ -66,14 +69,29 @@ Run \code{asleep} Model on Data
   if (requireNamespace("ggplot2", quietly = TRUE) &&
       requireNamespace("tidyr", quietly = TRUE) &&
       requireNamespace("dplyr", quietly = TRUE)) {
-    d = st[1:250,] \%>\% dplyr::mutate(time = lubridate::as_datetime(time))
+    d = st[1:250,] \%>\%
+      dplyr::mutate(
+        time = lubridate::as_datetime(time),
+        time_end = dplyr::lead(time)
+      ) \%>\%
+      dplyr::filter(!is.na(time_end))
     raw = df \%>\% dplyr::filter(time >= min(d$time) & time <= max(d$time))
     dat = raw \%>\%
       tidyr::gather(axis, value, -time)
-    #dat \%>\%
-    #   ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
-    #   ggplot2::geom_line() +
-    #   ggplot2::geom_segment(data = d, ggplot2::aes(xintercept = time))
+    d = d \%>\% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
+    dat \%>\%
+       ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
+       ggplot2::geom_step() +
+       ggplot2::geom_segment(
+         data = d,
+         ggplot2::aes(
+           x = time, xend = time_end,
+           y = activity_y, yend = activity_y,
+           linetype = sleep_wake
+         ),
+         colour = "black", linewidth = 1, inherit.aes = FALSE
+       ) +
+       ggplot2::labs(linetype = "Sleep/wake")
   }
 
 }

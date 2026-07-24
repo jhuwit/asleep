@@ -113,6 +113,7 @@ summarize_daily_sleep = function(sdf) {
 #' the current device time. e.g. +1 or -1
 #' @param report_light_and_temp If true, it adds mean temp, and light columns to the predictions
 #' @param force_download force a download of the model, passed to [sl_download_models()]
+#' @param sample_rate Sample rate for the data, currently not used.
 #' @returns A list of outputs, including summaries, paths, and dataframes.
 #' @export
 #'
@@ -131,7 +132,7 @@ summarize_daily_sleep = function(sdf) {
 #'     }
 #'   }
 #' }
-#' \dontrun{
+#' \donttest{
 #'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 #'   df = readr::read_csv(file)
 #'   if (asleep_check()) {
@@ -141,14 +142,29 @@ summarize_daily_sleep = function(sdf) {
 #'   if (requireNamespace("ggplot2", quietly = TRUE) &&
 #'       requireNamespace("tidyr", quietly = TRUE) &&
 #'       requireNamespace("dplyr", quietly = TRUE)) {
-#'     d = st[1:250,] %>% dplyr::mutate(time = lubridate::as_datetime(time))
+#'     d = st[1:250,] %>%
+#'       dplyr::mutate(
+#'         time = lubridate::as_datetime(time),
+#'         time_end = dplyr::lead(time)
+#'       ) %>%
+#'       dplyr::filter(!is.na(time_end))
 #'     raw = df %>% dplyr::filter(time >= min(d$time) & time <= max(d$time))
 #'     dat = raw %>%
 #'       tidyr::gather(axis, value, -time)
-#'     #dat %>%
-#'     #   ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
-#'     #   ggplot2::geom_line() +
-#'     #   ggplot2::geom_segment(data = d, ggplot2::aes(xintercept = time))
+#'     d = d %>% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
+#'     dat %>%
+#'        ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
+#'        ggplot2::geom_step() +
+#'        ggplot2::geom_segment(
+#'          data = d,
+#'          ggplot2::aes(
+#'            x = time, xend = time_end,
+#'            y = activity_y, yend = activity_y,
+#'            linetype = sleep_wake
+#'          ),
+#'          colour = "black", linewidth = 1, inherit.aes = FALSE
+#'        ) +
+#'        ggplot2::labs(linetype = "Sleep/wake")
 #'   }
 #'
 #' }
@@ -161,6 +177,7 @@ asleep = function(
     time_shift = "0",
     report_light_and_temp = FALSE,
     pytorch_device = c("cpu", "cuda:0"),
+    sample_rate = NULL,
     verbose = TRUE,
     force_download = FALSE
 ) {
@@ -216,7 +233,7 @@ asleep = function(
   args$local_repo_path = local_repo_path
   args$min_wear = min_wear
   args$time_shift = time_shift
-
+  args$sample_rate = sample_rate
 
   # Working on filenames
   file = transform_data_to_files(file = file, verbose = verbose)

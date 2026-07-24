@@ -7,8 +7,9 @@ Authors@R:
            role = c("aut", "cre"),
            email = "muschellij2@gmail.com",
            comment = c(ORCID = "0000-0001-6469-1750"))
-Description: Interfaces the 'asleep' Python 
-    module <https://github.com/OxWearables/asleep> to estimate
+Description: Interfaces the 'asleep' python 
+    module <https://github.com/OxWearables/asleep> from 
+    Yuan (2024) <doi:10.1038/s41746-024-01148-y> to estimate
     sleep from 'accelerometry' data.
 License: MIT + file LICENSE
 Encoding: UTF-8
