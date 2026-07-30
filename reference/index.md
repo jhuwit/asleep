@@ -2,7 +2,8 @@
 
 ## All functions
 
-- [`asleep()`](https://jhuwit.github.io/asleep/reference/asleep.md) :
+- [`asleep()`](https://jhuwit.github.io/asleep/reference/asleep.md)
+  [`py_asleep()`](https://jhuwit.github.io/asleep/reference/asleep.md) :
 
   Run `asleep` Model on Data
 
