@@ -1,6 +1,6 @@
 Package: asleep
 Title: Estimate Sleep from 'Accelerometry' Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person(given = "John",
            family = "Muschelli",
@@ -19,15 +19,17 @@ Imports:
     curl,
     lubridate,
     magrittr,
+    methods,
     readr,
-    reticulate (>= 1.42.0)
+    reticulate (>= 1.42.0),
+    rlang
 Suggests: 
     tidyr,
     dplyr,
     ggplot2,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    callr
 Config/testthat/edition: 3
 URL: https://github.com/jhuwit/asleep, https://jhuwit.github.io/asleep/
 BugReports: https://github.com/jhuwit/asleep/issues
 Config/roxygen2/version: 8.0.0
-
