@@ -4,4 +4,4 @@
 
 * This is a new release.
 ---
-Fixes for description and converting dontrun to donttest
+Fixes for internet issues with models and the like - added try around.
