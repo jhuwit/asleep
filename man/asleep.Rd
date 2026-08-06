@@ -54,9 +54,9 @@ the current device time. e.g. +1 or -1}
 \item{...}{arguments to pass to \link{asleep}}
 
 \item{pyenv_function}{function that loads the forest Python package.
-By default, it uses reticulate::py_import("asleep") to import
+By default, it uses \code{reticulate::py_import("asleep")} to import
 the package. If this function has an args argument, the output of
-pyenv_function will be re-assigned to args.}
+\code{pyenv_function} will be re-assigned to args.}
 
 \item{show}{Logical, whether to show the standard output on the
 screen while the child process is running, passed to \code{\link[callr:r]{callr::r()}}}
@@ -70,15 +70,24 @@ Run \code{asleep} Model on Data
 Run \code{asleep} with Python
 }
 \examples{
+asleep_check_result = function() {
+  res = try({suppressWarnings(asleep_check())})
+  if (inherits(res, "try-error")) {
+    res = FALSE
+  }
+  res
+}
 \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   stopifnot(file.exists(file))
-  if (asleep_check()) {
-    sl_download_models()
+  if (asleep_check_result()) {
+    try({sl_download_models()})
     out = try({asleep(file = file, verbose = 2L)})
     if (inherits(out, "try-error")) {
       message(out)
-      reticulate::py_last_error()
+      if (interactive()) {
+        reticulate::py_last_error()
+      }
     } else {
       pred = out$predictions
     }
@@ -87,36 +96,40 @@ Run \code{asleep} with Python
 \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   df = readr::read_csv(file)
-  if (asleep_check()) {
-    out = asleep(file = df)
-    st = out$predictions
-  if (requireNamespace("ggplot2", quietly = TRUE) &&
-      requireNamespace("tidyr", quietly = TRUE) &&
-      requireNamespace("dplyr", quietly = TRUE)) {
-    d = st[1:250,] \%>\%
-      dplyr::mutate(
-        time = lubridate::as_datetime(time),
-        time_end = dplyr::lead(time)
-      ) \%>\%
-      dplyr::filter(!is.na(time_end))
-    raw = df \%>\% dplyr::filter(time >= min(d$time) & time <= max(d$time))
-    dat = raw \%>\%
-      tidyr::gather(axis, value, -time)
-    d = d \%>\% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
-    dat \%>\%
-       ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
-       ggplot2::geom_step() +
-       ggplot2::geom_segment(
-         data = d,
-         ggplot2::aes(
-           x = time, xend = time_end,
-           y = activity_y, yend = activity_y,
-           linetype = sleep_wake
-         ),
-         colour = "black", linewidth = 1, inherit.aes = FALSE
-       ) +
-       ggplot2::labs(linetype = "Sleep/wake")
+  if (asleep_check_result()) {
+    out = try({asleep(file = df)})
+    if (inherits(out, "try-error")) {
+      message(out)
+    } else {
+      st = out$predictions
+      if (requireNamespace("ggplot2", quietly = TRUE) &&
+          requireNamespace("tidyr", quietly = TRUE) &&
+          requireNamespace("dplyr", quietly = TRUE)) {
+        d = st[1:250,] \%>\%
+          dplyr::mutate(
+            time = lubridate::as_datetime(time),
+            time_end = dplyr::lead(time)
+          ) \%>\%
+          dplyr::filter(!is.na(time_end))
+        raw = df \%>\% dplyr::filter(time >= min(d$time) & time <= max(d$time))
+        dat = raw \%>\%
+          tidyr::gather(axis, value, -time)
+        d = d \%>\% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
+        dat \%>\%
+          ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
+          ggplot2::geom_step() +
+          ggplot2::geom_segment(
+            data = d,
+            ggplot2::aes(
+              x = time, xend = time_end,
+              y = activity_y, yend = activity_y,
+              linetype = sleep_wake
+            ),
+            colour = "black", linewidth = 1, inherit.aes = FALSE
+          ) +
+          ggplot2::labs(linetype = "Sleep/wake")
+      }
+    }
   }
- }
 }
 }

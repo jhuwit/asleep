@@ -1,6 +1,7 @@
 # asleep 0.3.0
 
 * Failing gracefully for asleep tests with internet and python out of memory.
+* Added `py_require_asleep`.
 
 # asleep 0.2.0
 
