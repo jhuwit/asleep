@@ -4,4 +4,4 @@
 
 * This is a new release.
 ---
-Fixes for internet issues with models and the like - added try around.
+Fixes for internet issues with models and the like - wrapped `try` around.
