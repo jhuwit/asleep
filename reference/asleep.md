@@ -122,8 +122,8 @@ A list of outputs, including summaries, paths, and dataframes.
 #> Data shape for times: (480,)
 #> Data shape for nonwear: (480,)
 #> Detecting sleep windows
-#> args$outdir/tmp/RtmpYJuSuh/file19e16da5607d
-#> ssl_sleep_path: /tmp/RtmpYJuSuh/file19e16da5607d/ssl_sleep.npy, exists:FALSE
+#> args$outdir/tmp/RtmpmvfFDV/file1c0455935351
+#> ssl_sleep_path: /tmp/RtmpmvfFDV/file1c0455935351/ssl_sleep.npy, exists:FALSE
 #> data2model
 #> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,
 #>          -0.69115383, -0.6903333 ],
@@ -224,15 +224,15 @@ A list of outputs, including summaries, paths, and dataframes.
 #>        False, False, False, False, False, False, False, False, False,
 #>        False, False, False])
 #> Running SleepNet
-#> SleepNet outdir: /tmp/RtmpYJuSuh/file19e16da5607d
-#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/qYB7v8CH_3K8YlPg/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
+#> SleepNet outdir: /tmp/RtmpmvfFDV/file1c0455935351
+#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/70yJsPQdaOW6puQO/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
 #> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl
-#> SleepNet artifact ssl_sleep: /tmp/RtmpYJuSuh/file19e16da5607d/ssl_sleep.npy, exists: TRUE
-#> SleepNet artifact y_pred: /tmp/RtmpYJuSuh/file19e16da5607d/y_pred.npy, exists: FALSE
-#> SleepNet artifact pred_prob: /tmp/RtmpYJuSuh/file19e16da5607d/pred_prob.npy, exists: FALSE
-#> SleepNet artifact x_npy: /tmp/RtmpYJuSuh/file19e16da5607d/X.npy, exists: TRUE
-#> SleepNet artifact x_npy_gz: /tmp/RtmpYJuSuh/file19e16da5607d/X.npy.gz, exists: FALSE
-#> SleepNet artifact npid: /tmp/RtmpYJuSuh/file19e16da5607d/npid.npy, exists: TRUE
+#> SleepNet artifact ssl_sleep: /tmp/RtmpmvfFDV/file1c0455935351/ssl_sleep.npy, exists: TRUE
+#> SleepNet artifact y_pred: /tmp/RtmpmvfFDV/file1c0455935351/y_pred.npy, exists: FALSE
+#> SleepNet artifact pred_prob: /tmp/RtmpmvfFDV/file1c0455935351/pred_prob.npy, exists: FALSE
+#> SleepNet artifact x_npy: /tmp/RtmpmvfFDV/file1c0455935351/X.npy, exists: TRUE
+#> SleepNet artifact x_npy_gz: /tmp/RtmpmvfFDV/file1c0455935351/X.npy.gz, exists: FALSE
+#> SleepNet artifact npid: /tmp/RtmpmvfFDV/file1c0455935351/npid.npy, exists: TRUE
 #> Mapping SleepNet predictions back to original time series
 #> Generating predictions dataframe
 #> Generating sleep block df and indicate the longest block per day
