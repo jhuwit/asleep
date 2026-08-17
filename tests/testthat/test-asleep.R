@@ -77,6 +77,22 @@ skip_if_model_download_failed = function(result) {
   invisible()
 }
 
+skip_if_memory_limited = function(result) {
+  if (!inherits(result, "try-error")) {
+    return(invisible())
+  }
+
+  error_message = paste(as.character(result), collapse = "\n")
+  if (grepl(
+    "out of memory|MPS backend|CUDA.*memory|memory allocation",
+    error_message,
+    ignore.case = TRUE
+  )) {
+    testthat::skip(paste("Insufficient accelerator memory:", error_message))
+  }
+  invisible()
+}
+
 # model_path = file.path(
 #   tempdir(),
 #   "ssl.joblib.lzma")
@@ -94,10 +110,7 @@ testthat::test_that("asleep model works", {
     # )
     res = try({asleep(file = file, verbose = 2L, force_download = TRUE)})
     skip_if_model_download_failed(res)
-    if (inherits(res, "try-error") &&
-        grepl("out of memory", res)) {
-      testthat::skip("Out of Memory, skipping test")
-    }
+    skip_if_memory_limited(res)
     testthat::expect_named(
       res,
       c("predictions", "times", "times_utc", "sleep_windows", "sleep_windows_long",
