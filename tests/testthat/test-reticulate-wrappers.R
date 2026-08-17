@@ -97,3 +97,28 @@ testthat::test_that("read_summary_json returns JSON metrics as a data frame", {
   testthat::expect_equal(fake_file$mode, "r")
   testthat::expect_true(fake_file$closed)
 })
+
+testthat::test_that("py_asleep runs in a child process with supplied Python setup", {
+  calls = new.env(parent = emptyenv())
+  testthat::local_mocked_bindings(
+    asleep = function(...) list(...),
+    .package = "asleep"
+  )
+  testthat::local_mocked_bindings(
+    r = function(show, func, args) {
+      calls$show = show
+      do.call(func, args)
+    },
+    .package = "callr"
+  )
+
+  result = py_asleep(
+    file = "input.csv",
+    pyenv_function = function(args) c(args, list(verbose = FALSE)),
+    show = TRUE
+  )
+
+  testthat::expect_true(calls$show)
+  testthat::expect_equal(result$file, "input.csv")
+  testthat::expect_false(result$verbose)
+})

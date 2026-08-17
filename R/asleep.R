@@ -129,7 +129,6 @@ summarize_daily_sleep = function(sdf) {
 #'   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
 #'   stopifnot(file.exists(file))
 #'   if (asleep_check_result()) {
-#'     try({sl_download_models()})
 #'     out = try({asleep(file = file, verbose = 2L)})
 #'     if (inherits(out, "try-error")) {
 #'       message(out)

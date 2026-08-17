@@ -48,7 +48,16 @@ sl_download_model = function(
     ...
 ) {
   base_url = sl_url()
-  curl::curl_download(url = base_url, destfile = model_path, ...)
+  tryCatch(
+    curl::curl_download(url = base_url, destfile = model_path, ...),
+    error = function(error) {
+      stop(
+        "Unable to download the asleep model from ", base_url, ". ",
+        conditionMessage(error),
+        call. = FALSE
+      )
+    }
+  )
   return(model_path)
 }
 
@@ -65,6 +74,14 @@ sl_download_models = function(
 ) {
   abase_noconvert = reticulate::import("asleep", convert = FALSE)
 
-  abase_noconvert$get_sleep$download_models(force_download = force_download)
+  tryCatch(
+    abase_noconvert$get_sleep$download_models(force_download = force_download),
+    error = function(error) {
+      stop(
+        "Unable to download asleep model assets. ", conditionMessage(error),
+        call. = FALSE
+      )
+    }
+  )
   return(NULL)
 }

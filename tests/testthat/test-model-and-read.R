@@ -86,6 +86,35 @@ testthat::test_that("sl_download_model can download from a local URL", {
   testthat::expect_equal(readLines(dest), "model-bytes")
 })
 
+testthat::test_that("model download errors provide a useful, recoverable error", {
+  testthat::local_mocked_bindings(
+    curl_download = function(...) stop("Could not resolve host"),
+    .package = "curl"
+  )
+
+  testthat::expect_error(
+    asleep:::sl_download_model(tempfile()),
+    "Unable to download the asleep model.*Could not resolve host"
+  )
+})
+
+testthat::test_that("Python model download errors provide a useful, recoverable error", {
+  testthat::local_mocked_bindings(
+    import = function(module, convert = FALSE) {
+      testthat::expect_equal(module, "asleep")
+      list(get_sleep = list(
+        download_models = function(force_download) stop("download timed out")
+      ))
+    },
+    .package = "reticulate"
+  )
+
+  testthat::expect_error(
+    asleep::sl_download_models(force_download = TRUE),
+    "Unable to download asleep model assets.*download timed out"
+  )
+})
+
 testthat::test_that("sl_read uses top-level and nested read functions", {
   input = tempfile(fileext = ".csv")
   writeLines("time,x,y,z\n2024-01-01 00:00:00,1,2,3", input)
