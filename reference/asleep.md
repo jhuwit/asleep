@@ -81,8 +81,8 @@ py_asleep(
 - pyenv_function:
 
   function that loads the forest Python package. By default, it uses
-  reticulate::py_import("asleep") to import the package. If this
-  function has an args argument, the output of pyenv_function will be
+  `reticulate::py_import("asleep")` to import the package. If this
+  function has an args argument, the output of `pyenv_function` will be
   re-assigned to args.
 
 - show:
@@ -98,15 +98,24 @@ A list of outputs, including summaries, paths, and dataframes.
 ## Examples
 
 ``` r
+asleep_check_result = function() {
+  res = try({suppressWarnings(asleep_check())})
+  if (inherits(res, "try-error")) {
+    res = FALSE
+  }
+  res
+}
 # \donttest{
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   stopifnot(file.exists(file))
-  if (asleep_check()) {
-    sl_download_models()
+  if (asleep_check_result()) {
+    try({sl_download_models()})
     out = try({asleep(file = file, verbose = 2L)})
     if (inherits(out, "try-error")) {
       message(out)
-      reticulate::py_last_error()
+      if (interactive()) {
+        reticulate::py_last_error()
+      }
     } else {
       pred = out$predictions
     }
@@ -122,8 +131,8 @@ A list of outputs, including summaries, paths, and dataframes.
 #> Data shape for times: (480,)
 #> Data shape for nonwear: (480,)
 #> Detecting sleep windows
-#> args$outdir/tmp/RtmpmvfFDV/file1c0455935351
-#> ssl_sleep_path: /tmp/RtmpmvfFDV/file1c0455935351/ssl_sleep.npy, exists:FALSE
+#> args$outdir/tmp/RtmpntvvCG/file1af64c9cdeb9
+#> ssl_sleep_path: /tmp/RtmpntvvCG/file1af64c9cdeb9/ssl_sleep.npy, exists:FALSE
 #> data2model
 #> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,
 #>          -0.69115383, -0.6903333 ],
@@ -224,15 +233,15 @@ A list of outputs, including summaries, paths, and dataframes.
 #>        False, False, False, False, False, False, False, False, False,
 #>        False, False, False])
 #> Running SleepNet
-#> SleepNet outdir: /tmp/RtmpmvfFDV/file1c0455935351
-#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/70yJsPQdaOW6puQO/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
+#> SleepNet outdir: /tmp/RtmpntvvCG/file1af64c9cdeb9
+#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/hxu_SlMUJV_v3yuq/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
 #> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl
-#> SleepNet artifact ssl_sleep: /tmp/RtmpmvfFDV/file1c0455935351/ssl_sleep.npy, exists: TRUE
-#> SleepNet artifact y_pred: /tmp/RtmpmvfFDV/file1c0455935351/y_pred.npy, exists: FALSE
-#> SleepNet artifact pred_prob: /tmp/RtmpmvfFDV/file1c0455935351/pred_prob.npy, exists: FALSE
-#> SleepNet artifact x_npy: /tmp/RtmpmvfFDV/file1c0455935351/X.npy, exists: TRUE
-#> SleepNet artifact x_npy_gz: /tmp/RtmpmvfFDV/file1c0455935351/X.npy.gz, exists: FALSE
-#> SleepNet artifact npid: /tmp/RtmpmvfFDV/file1c0455935351/npid.npy, exists: TRUE
+#> SleepNet artifact ssl_sleep: /tmp/RtmpntvvCG/file1af64c9cdeb9/ssl_sleep.npy, exists: TRUE
+#> SleepNet artifact y_pred: /tmp/RtmpntvvCG/file1af64c9cdeb9/y_pred.npy, exists: FALSE
+#> SleepNet artifact pred_prob: /tmp/RtmpntvvCG/file1af64c9cdeb9/pred_prob.npy, exists: FALSE
+#> SleepNet artifact x_npy: /tmp/RtmpntvvCG/file1af64c9cdeb9/X.npy, exists: TRUE
+#> SleepNet artifact x_npy_gz: /tmp/RtmpntvvCG/file1af64c9cdeb9/X.npy.gz, exists: FALSE
+#> SleepNet artifact npid: /tmp/RtmpntvvCG/file1af64c9cdeb9/npid.npy, exists: TRUE
 #> Mapping SleepNet predictions back to original time series
 #> Generating predictions dataframe
 #> Generating sleep block df and indicate the longest block per day
@@ -250,37 +259,41 @@ A list of outputs, including summaries, paths, and dataframes.
 #> 
 #> ℹ Use `spec()` to retrieve the full column specification for this data.
 #> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-  if (asleep_check()) {
-    out = asleep(file = df)
-    st = out$predictions
-  if (requireNamespace("ggplot2", quietly = TRUE) &&
-      requireNamespace("tidyr", quietly = TRUE) &&
-      requireNamespace("dplyr", quietly = TRUE)) {
-    d = st[1:250,] %>%
-      dplyr::mutate(
-        time = lubridate::as_datetime(time),
-        time_end = dplyr::lead(time)
-      ) %>%
-      dplyr::filter(!is.na(time_end))
-    raw = df %>% dplyr::filter(time >= min(d$time) & time <= max(d$time))
-    dat = raw %>%
-      tidyr::gather(axis, value, -time)
-    d = d %>% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
-    dat %>%
-       ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
-       ggplot2::geom_step() +
-       ggplot2::geom_segment(
-         data = d,
-         ggplot2::aes(
-           x = time, xend = time_end,
-           y = activity_y, yend = activity_y,
-           linetype = sleep_wake
-         ),
-         colour = "black", linewidth = 1, inherit.aes = FALSE
-       ) +
-       ggplot2::labs(linetype = "Sleep/wake")
+  if (asleep_check_result()) {
+    out = try({asleep(file = df)})
+    if (inherits(out, "try-error")) {
+      message(out)
+    } else {
+      st = out$predictions
+      if (requireNamespace("ggplot2", quietly = TRUE) &&
+          requireNamespace("tidyr", quietly = TRUE) &&
+          requireNamespace("dplyr", quietly = TRUE)) {
+        d = st[1:250,] %>%
+          dplyr::mutate(
+            time = lubridate::as_datetime(time),
+            time_end = dplyr::lead(time)
+          ) %>%
+          dplyr::filter(!is.na(time_end))
+        raw = df %>% dplyr::filter(time >= min(d$time) & time <= max(d$time))
+        dat = raw %>%
+          tidyr::gather(axis, value, -time)
+        d = d %>% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
+        dat %>%
+          ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
+          ggplot2::geom_step() +
+          ggplot2::geom_segment(
+            data = d,
+            ggplot2::aes(
+              x = time, xend = time_end,
+              y = activity_y, yend = activity_y,
+              linetype = sleep_wake
+            ),
+            colour = "black", linewidth = 1, inherit.aes = FALSE
+          ) +
+          ggplot2::labs(linetype = "Sleep/wake")
+      }
+    }
   }
- }
 #> Checking Data
 #> Writing file to CSV...
 #> Parsing raw data

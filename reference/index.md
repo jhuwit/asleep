@@ -18,6 +18,11 @@
   [`sl_get_sslnet()`](https://jhuwit.github.io/asleep/reference/get_sslnet.md)
   : Get SSL Net -
 
+- [`py_require_asleep()`](https://jhuwit.github.io/asleep/reference/py_require_asleep.md)
+  :
+
+  Command for `py_require` for `asleep`
+
 - [`sl_download_models()`](https://jhuwit.github.io/asleep/reference/sl_download_models.md)
   :
 
