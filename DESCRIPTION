@@ -19,7 +19,6 @@ Imports:
     assertthat,
     curl,
     lubridate,
-    magrittr,
     methods,
     readr,
     reticulate (>= 1.42.0),

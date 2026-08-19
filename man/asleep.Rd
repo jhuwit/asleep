@@ -81,7 +81,6 @@ asleep_check_result = function() {
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   stopifnot(file.exists(file))
   if (asleep_check_result()) {
-    try({sl_download_models()})
     out = try({asleep(file = file, verbose = 2L)})
     if (inherits(out, "try-error")) {
       message(out)
@@ -105,17 +104,17 @@ asleep_check_result = function() {
       if (requireNamespace("ggplot2", quietly = TRUE) &&
           requireNamespace("tidyr", quietly = TRUE) &&
           requireNamespace("dplyr", quietly = TRUE)) {
-        d = st[1:250,] \%>\%
+        d = st[1:250,] |>
           dplyr::mutate(
             time = lubridate::as_datetime(time),
             time_end = dplyr::lead(time)
-          ) \%>\%
+          ) |>
           dplyr::filter(!is.na(time_end))
-        raw = df \%>\% dplyr::filter(time >= min(d$time) & time <= max(d$time))
-        dat = raw \%>\%
+        raw = df |> dplyr::filter(time >= min(d$time) & time <= max(d$time))
+        dat = raw |>
           tidyr::gather(axis, value, -time)
-        d = d \%>\% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
-        dat \%>\%
+        d = d |> dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
+        dat |>
           ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
           ggplot2::geom_step() +
           ggplot2::geom_segment(
