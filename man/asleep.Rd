@@ -20,11 +20,7 @@ asleep(
 py_asleep(
   ...,
   pyenv_function = function() {
-    
-    reticulate::py_require(c("asleep @ git+https://github.com/muschellij2/asleep.git",
-    "argparse", "numpy", "pandas", "importlib"), python_version = "3.8")
-    
-    reticulate::import("asleep")
+     asleep::py_require_asleep()
  },
   show = FALSE
 )
