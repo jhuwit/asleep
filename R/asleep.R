@@ -41,8 +41,8 @@ transform_data_to_files = function(file, verbose = TRUE) {
 
 summarize_daily_sleep = function(sdf) {
   get_mean_median = function(x) {
-    x %>%
-      dplyr::select(-dplyr::any_of("wear_duration_H")) %>%
+    x |>
+      dplyr::select(-dplyr::any_of("wear_duration_H")) |>
       dplyr::summarise(
         dplyr::across(
           dplyr::where(is.numeric), list(
@@ -53,7 +53,7 @@ summarize_daily_sleep = function(sdf) {
   prefix = day_of_week = is_weekend = NULL
   rm(list = c("day_of_week", "prefix", "is_weekend"))
 
-  sdf = sdf %>%
+  sdf = sdf |>
     dplyr::mutate(
       day_of_week = as.character(day_of_week),
       day_of_week = dplyr::recode_values(
@@ -67,26 +67,26 @@ summarize_daily_sleep = function(sdf) {
         "6" ~ "Sunday"
       ))
 
-  overall = sdf %>%
+  overall = sdf |>
     get_mean_median()
   if (nrow(overall) > 0) {
-    overall = overall %>%
-      dplyr::mutate(prefix = "overall") %>%
+    overall = overall |>
+      dplyr::mutate(prefix = "overall") |>
       dplyr::select(prefix, dplyr::everything())
   }
 
-  dow = sdf %>%
-    dplyr::group_by(day_of_week) %>%
-    get_mean_median() %>%
-    dplyr::rename(prefix = day_of_week) %>%
+  dow = sdf |>
+    dplyr::group_by(day_of_week) |>
+    get_mean_median() |>
+    dplyr::rename(prefix = day_of_week) |>
     dplyr::select(prefix, dplyr::everything())
 
-  we = sdf %>%
-    dplyr::group_by(is_weekend) %>%
-    get_mean_median() %>%
-    dplyr::mutate(is_weekend = ifelse(is_weekend, "weekend", "weekday")) %>%
-    dplyr::rename(prefix = is_weekend) %>%
-    dplyr::mutate(prefix = as.character(prefix)) %>%
+  we = sdf |>
+    dplyr::group_by(is_weekend) |>
+    get_mean_median() |>
+    dplyr::mutate(is_weekend = ifelse(is_weekend, "weekend", "weekday")) |>
+    dplyr::rename(prefix = is_weekend) |>
+    dplyr::mutate(prefix = as.character(prefix)) |>
     dplyr::select(prefix, dplyr::everything())
 
   result = dplyr::bind_rows(overall, dow, we)
@@ -152,17 +152,17 @@ summarize_daily_sleep = function(sdf) {
 #'       if (requireNamespace("ggplot2", quietly = TRUE) &&
 #'           requireNamespace("tidyr", quietly = TRUE) &&
 #'           requireNamespace("dplyr", quietly = TRUE)) {
-#'         d = st[1:250,] %>%
+#'         d = st[1:250,] |>
 #'           dplyr::mutate(
 #'             time = lubridate::as_datetime(time),
 #'             time_end = dplyr::lead(time)
-#'           ) %>%
+#'           ) |>
 #'           dplyr::filter(!is.na(time_end))
-#'         raw = df %>% dplyr::filter(time >= min(d$time) & time <= max(d$time))
-#'         dat = raw %>%
+#'         raw = df |> dplyr::filter(time >= min(d$time) & time <= max(d$time))
+#'         dat = raw |>
 #'           tidyr::gather(axis, value, -time)
-#'         d = d %>% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
-#'         dat %>%
+#'         d = d |> dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
+#'         dat |>
 #'           ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
 #'           ggplot2::geom_step() +
 #'           ggplot2::geom_segment(
@@ -597,8 +597,8 @@ asleep = function(
   py_summarize_daily_sleep = abase_noconvert$summary$summarize_daily_sleep
   py_summarize_daily_sleep(day_summary_df, output_json_path, args$min_wear)
 
-  sdf = day_summary_df %>%
-    reticulate::py_to_r() %>%
+  sdf = day_summary_df |>
+    reticulate::py_to_r() |>
     dplyr::filter(wear_duration_H >= reticulate::py_to_r(args$min_wear))
 
   if (nrow(sdf) == 0) {
@@ -625,7 +625,7 @@ asleep = function(
     if (is.character(x) || is.null(x)) {
       return(x)
     }
-    lubridate::with_tz(x, tz = "UTC") %>%
+    lubridate::with_tz(x, tz = "UTC") |>
       format("%Y-%m-%d %H:%M:%S")
   }
   predictions_df$time = make_utc_char(predictions_df$time)
