@@ -2,6 +2,7 @@
 
 * Failing gracefully for asleep tests with internet and python out of memory.
 * Added `py_require_asleep`.
+* Removed pipe requirement.
 
 # asleep 0.2.0
 
