@@ -14,7 +14,8 @@ asleep(
   pytorch_device = c("cpu", "cuda:0"),
   sample_rate = NULL,
   verbose = TRUE,
-  force_download = FALSE
+  force_download = FALSE,
+  tzone = "UTC"
 )
 
 py_asleep(
@@ -41,11 +42,15 @@ the current device time. e.g. +1 or -1}
 
 \item{pytorch_device}{device to use for prediction for PyTorch.}
 
-\item{sample_rate}{Sample rate for the data, currently not used.}
+\item{sample_rate}{Sample rate (in Hz) of the data.  If \code{NULL}, then
+\code{attr(file, "sample_rate")} is used if present.  If both are \code{NULL},
+the sample rate is not passed and \code{asleep} infers it from the data.}
 
 \item{verbose}{print diagnostic messages}
 
 \item{force_download}{force a download of the model, passed to \code{\link[=sl_download_models]{sl_download_models()}}}
+
+\item{tzone}{The timezone to use on the data after reading back into R.}
 
 \item{...}{arguments to pass to \link{asleep}}
 

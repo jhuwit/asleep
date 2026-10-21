@@ -1,6 +1,6 @@
 Package: asleep
 Title: Estimate Sleep from 'Accelerometry' Data
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: 
     person(given = "John",
            family = "Muschelli",
@@ -15,6 +15,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.1.0)
+SystemRequirements: Python (>= 3.8), 'asleep' Python module (>= 0.5.0)
 Imports: 
     assertthat,
     curl,

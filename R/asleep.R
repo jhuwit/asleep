@@ -113,7 +113,11 @@ summarize_daily_sleep = function(sdf) {
 #' the current device time. e.g. +1 or -1
 #' @param report_light_and_temp If true, it adds mean temp, and light columns to the predictions
 #' @param force_download force a download of the model, passed to [sl_download_models()]
-#' @param sample_rate Sample rate for the data, currently not used.
+#' @param tzone The timezone to use on the data after reading back into R.
+#' @param sample_rate Sample rate (in Hz) of the data.  If `NULL`, then
+#' `attr(file, "sample_rate")` is used if present.  If both are `NULL`,
+#' the sample rate is not passed and `asleep` infers it from the data.
+#'
 #' @returns A list of outputs, including summaries, paths, and dataframes.
 #' @export
 #'
@@ -190,7 +194,8 @@ asleep = function(
     pytorch_device = c("cpu", "cuda:0"),
     sample_rate = NULL,
     verbose = TRUE,
-    force_download = FALSE
+    force_download = FALSE,
+    tzone = "UTC"
 ) {
   on.exit(cleanup_uv_lock_files(), add = TRUE)
 
@@ -244,7 +249,25 @@ asleep = function(
   args$local_repo_path = local_repo_path
   args$min_wear = min_wear
   args$time_shift = time_shift
-  args$sample_rate = sample_rate
+
+  # Use the sample rate attribute of the data if not explicitly passed
+  if (is.null(sample_rate)) {
+    sample_rate = attr(file, "sample_rate")
+    if (is.null(sample_rate) && is.list(file) && !is.data.frame(file) &&
+        length(file) > 0) {
+      sample_rate = attr(file[[1]], "sample_rate")
+    }
+  }
+  if (!is.null(sample_rate)) {
+    assertthat::assert_that(
+      assertthat::is.count(sample_rate)
+    )
+    args$sample_rate = as.integer(sample_rate)
+  } else if (inherits(args, "python.builtin.object") &&
+             reticulate::py_has_attr(args, "sample_rate")) {
+    # Namespace is the class, so remove any value left from a previous call
+    reticulate::py_del_attr(args, "sample_rate")
+  }
 
   # Working on filenames
   file = transform_data_to_files(file = file, verbose = verbose)
@@ -621,36 +644,36 @@ asleep = function(
   )
 
   # NEED THIS FOR TIMES!
-  make_utc_char = function(x) {
+  make_utc_char = function(x, tzone = "UTC") {
     if (is.character(x) || is.null(x)) {
       return(x)
     }
-    lubridate::with_tz(x, tz = "UTC") |>
+    lubridate::with_tz(x, tzone = tzone) |>
       format("%Y-%m-%d %H:%M:%S")
   }
-  predictions_df$time = make_utc_char(predictions_df$time)
-  out_data$data$time = make_utc_char(out_data$data$time)
+  predictions_df$time = make_utc_char(predictions_df$time, tzone = tzone)
+  out_data$data$time = make_utc_char(out_data$data$time, tzone = tzone)
 
   out_windows$sleep_wins_long_per_day_df$start = make_utc_char(
-    out_windows$sleep_wins_long_per_day_df$start)
+    out_windows$sleep_wins_long_per_day_df$start, tzone = tzone)
   out_windows$sleep_wins_long_per_day_df$end = make_utc_char(
-    out_windows$sleep_wins_long_per_day_df$end)
+    out_windows$sleep_wins_long_per_day_df$end, tzone = tzone)
 
   out_model$times = make_utc_char(out_model$times)
 
   out_windows$all_sleep_wins_df$start = make_utc_char(
-    out_windows$all_sleep_wins_df$start)
+    out_windows$all_sleep_wins_df$start, tzone = tzone)
   out_windows$all_sleep_wins_df$end = make_utc_char(
-    out_windows$all_sleep_wins_df$end)
+    out_windows$all_sleep_wins_df$end, tzone = tzone)
   out_windows$all_sleep_wins_df$interval_start = make_utc_char(
-    out_windows$all_sleep_wins_df$interval_start)
+    out_windows$all_sleep_wins_df$interval_start, tzone = tzone)
   out_windows$all_sleep_wins_df$interval_end = make_utc_char(
-    out_windows$all_sleep_wins_df$interval_end)
+    out_windows$all_sleep_wins_df$interval_end, tzone = tzone)
 
   result = list(
     predictions = predictions_df,
     times = times,
-    times_utc = make_utc_char(reticulate::py_to_r(times)),
+    times_utc = make_utc_char(reticulate::py_to_r(times), tzone = tzone),
     sleep_windows = df_all_sleep_wins,
     sleep_windows_long = df_sleep_wins_long_per_day,
     day_summary = day_summary_df,

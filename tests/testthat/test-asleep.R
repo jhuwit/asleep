@@ -154,8 +154,11 @@ testthat::test_that("asleep completes with cached model assets without internet 
     wear_duration_H = 23, day_of_week = 0, is_weekend = FALSE,
     sleep_duration_H = 8
   )
+  captured = new.env(parent = emptyenv())
   sleep_module = list(
-    get_parsed_data = function(...) {
+    get_parsed_data = function(raw_data_path, info_data_path,
+                               resample_hz, args) {
+      captured$args = args
       asleep_fake_tuple(data.frame(time = times), list(device = "test"))
     },
     transform_data2model_input = function(...) {
@@ -233,6 +236,28 @@ testthat::test_that("asleep completes with cached model assets without internet 
   testthat::expect_equal(result$predictions$sleep_wake, c("wake", "sleep"))
   testthat::expect_true(result$sleep_windows$is_longest_block[[1]])
   testthat::expect_equal(result$summary$prefix, c("overall", "Monday", "weekday"))
+  testthat::expect_null(captured$args$sample_rate)
+
+  # explicit sample rate is passed as an integer
+  suppressMessages(asleep(input, outdir = tempfile(), sample_rate = 30))
+  testthat::expect_identical(captured$args$sample_rate, 30L)
+
+  # sample rate taken from the data attribute
+  df = data.frame(
+    time = as.POSIXct("2024-01-01 22:00:00", tz = "UTC"), x = 1, y = 2, z = 3
+  )
+  attr(df, "sample_rate") = 25
+  suppressMessages(asleep(df, outdir = tempfile()))
+  testthat::expect_identical(captured$args$sample_rate, 25L)
+
+  # explicit argument overrides the attribute
+  suppressMessages(asleep(df, outdir = tempfile(), sample_rate = 50L))
+  testthat::expect_identical(captured$args$sample_rate, 50L)
+
+  testthat::expect_error(
+    asleep(input, outdir = tempfile(), sample_rate = 29.97),
+    "sample_rate"
+  )
 })
 
 testthat::test_that("summarize_daily_sleep creates overall and grouped summaries", {

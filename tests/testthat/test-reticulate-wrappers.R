@@ -44,7 +44,7 @@ testthat::test_that(".onLoad declares Python requirements through reticulate", {
   testthat::expect_equal(
     calls$packages,
     c(
-      "asleep @ git+https://github.com/muschellij2/asleep.git",
+      "asleep>=0.5.0",
       "argparse", "numpy", "pandas", "importlib"
     )
   )

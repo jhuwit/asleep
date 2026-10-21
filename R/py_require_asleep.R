@@ -10,7 +10,7 @@ py_require_asleep = function(...) {
   #   python_version = "3.8")
   reticulate::py_require(
     c(
-      "asleep @ git+https://github.com/muschellij2/asleep.git",
+      "asleep>=0.5.0",
       "argparse", "numpy", "pandas", "importlib"
     ),
     python_version = "3.8")
