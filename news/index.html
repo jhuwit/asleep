@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">asleep</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,9 +33,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0" id="asleep-030">asleep 0.3.0<a class="anchor" aria-label="anchor" href="#asleep-030"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.4.0" id="asleep-040">asleep 0.4.0<a class="anchor" aria-label="anchor" href="#asleep-040"></a></h2>
+<ul><li>Now requires the <code>asleep</code> Python module version 0.5.0 or higher (from PyPI).</li>
+<li>
+<code><a href="../reference/asleep.html">asleep()</a></code> now passes <code>sample_rate</code> to <code>asleep</code>. If not specified, it uses <code>attr(file, "sample_rate")</code>; if neither is set, the sample rate is inferred.</li>
+<li>Added <code>tzone</code> argument to <code><a href="../reference/asleep.html">asleep()</a></code>.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="asleep-030">asleep 0.3.0<a class="anchor" aria-label="anchor" href="#asleep-030"></a></h2><p class="text-muted">CRAN release: 2026-08-21</p>
 <ul><li>Failing gracefully for asleep tests with internet and python out of memory.</li>
 <li>Added <code>py_require_asleep</code>.</li>
+<li>Removed pipe requirement.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="asleep-020">asleep 0.2.0<a class="anchor" aria-label="anchor" href="#asleep-020"></a></h2>

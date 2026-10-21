@@ -9,7 +9,7 @@ Run asleep with Python"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">asleep</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,17 +51,14 @@ Run asleep with Python"></head><body>
 <span>  pytorch_device <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cpu"</span>, <span class="st">"cuda:0"</span><span class="op">)</span>,</span>
 <span>  sample_rate <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  force_download <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  force_download <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  tzone <span class="op">=</span> <span class="st">"UTC"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">py_asleep</span><span class="op">(</span></span>
 <span>  <span class="va">...</span>,</span>
 <span>  pyenv_function <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    </span>
-<span>    <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_require.html" class="external-link">py_require</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asleep @ git+https://github.com/muschellij2/asleep.git"</span>,</span>
-<span>    <span class="st">"argparse"</span>, <span class="st">"numpy"</span>, <span class="st">"pandas"</span>, <span class="st">"importlib"</span><span class="op">)</span>, python_version <span class="op">=</span> <span class="st">"3.8"</span><span class="op">)</span></span>
-<span>    </span>
-<span>    <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/import.html" class="external-link">import</a></span><span class="op">(</span><span class="st">"asleep"</span><span class="op">)</span></span>
+<span>     <span class="fu">asleep</span><span class="fu">::</span><span class="fu"><a href="py_require_asleep.html">py_require_asleep</a></span><span class="op">(</span><span class="op">)</span></span>
 <span> <span class="op">}</span>,</span>
 <span>  show <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -99,7 +96,9 @@ the current device time. e.g. +1 or -1</p></dd>
 
 
 <dt id="arg-sample-rate">sample_rate<a class="anchor" aria-label="anchor" href="#arg-sample-rate"></a></dt>
-<dd><p>Sample rate for the data, currently not used.</p></dd>
+<dd><p>Sample rate (in Hz) of the data.  If <code>NULL</code>, then
+<code>attr(file, "sample_rate")</code> is used if present.  If both are <code>NULL</code>,
+the sample rate is not passed and <code>asleep</code> infers it from the data.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -108,6 +107,10 @@ the current device time. e.g. +1 or -1</p></dd>
 
 <dt id="arg-force-download">force_download<a class="anchor" aria-label="anchor" href="#arg-force-download"></a></dt>
 <dd><p>force a download of the model, passed to <code><a href="sl_download_models.html">sl_download_models()</a></code></p></dd>
+
+
+<dt id="arg-tzone">tzone<a class="anchor" aria-label="anchor" href="#arg-tzone"></a></dt>
+<dd><p>The timezone to use on the data after reading back into R.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -144,7 +147,6 @@ screen while the child process is running, passed to <code><a href="https://call
 <span class="r-in"><span>  <span class="va">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example_sleep.csv.gz"</span>, package <span class="op">=</span> <span class="st">"asleep"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu">asleep_check_result</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span><span class="fu"><a href="sl_download_models.html">sl_download_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="va">out</span> <span class="op">=</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span><span class="fu">asleep</span><span class="op">(</span>file <span class="op">=</span> <span class="va">file</span>, verbose <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">out</span>, <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
@@ -166,8 +168,8 @@ screen while the child process is running, passed to <code><a href="https://call
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for times: (480,)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for nonwear: (480,)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Detecting sleep windows</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> args$outdir/tmp/RtmpI8eUGp/file1a3718f20350</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ssl_sleep_path: /tmp/RtmpI8eUGp/file1a3718f20350/ssl_sleep.npy, exists:FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> args$outdir/tmp/RtmpfP40Le/file1ac25bb97e06</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ssl_sleep_path: /tmp/RtmpfP40Le/file1ac25bb97e06/ssl_sleep.npy, exists:FALSE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> data2model</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>          -0.69115383, -0.6903333 ],</span>
@@ -268,15 +270,15 @@ screen while the child process is running, passed to <code><a href="https://call
 <span class="r-msg co"><span class="r-pr">#&gt;</span>        False, False, False, False, False, False, False, False, False,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>        False, False, False])</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running SleepNet</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet outdir: /tmp/RtmpI8eUGp/file1a3718f20350</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/jSDVSRQMFartHAyA/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet outdir: /tmp/RtmpfP40Le/file1ac25bb97e06</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/BQJ6MdOizdRAQlnq/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact ssl_sleep: /tmp/RtmpI8eUGp/file1a3718f20350/ssl_sleep.npy, exists: TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact y_pred: /tmp/RtmpI8eUGp/file1a3718f20350/y_pred.npy, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact pred_prob: /tmp/RtmpI8eUGp/file1a3718f20350/pred_prob.npy, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy: /tmp/RtmpI8eUGp/file1a3718f20350/X.npy, exists: TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy_gz: /tmp/RtmpI8eUGp/file1a3718f20350/X.npy.gz, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact npid: /tmp/RtmpI8eUGp/file1a3718f20350/npid.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact ssl_sleep: /tmp/RtmpfP40Le/file1ac25bb97e06/ssl_sleep.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact y_pred: /tmp/RtmpfP40Le/file1ac25bb97e06/y_pred.npy, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact pred_prob: /tmp/RtmpfP40Le/file1ac25bb97e06/pred_prob.npy, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy: /tmp/RtmpfP40Le/file1ac25bb97e06/X.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy_gz: /tmp/RtmpfP40Le/file1ac25bb97e06/X.npy.gz, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact npid: /tmp/RtmpfP40Le/file1ac25bb97e06/npid.npy, exists: TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping SleepNet predictions back to original time series</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating predictions dataframe</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating sleep block df and indicate the longest block per day</span>
@@ -303,17 +305,17 @@ screen while the child process is running, passed to <code><a href="https://call
 <span class="r-in"><span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggplot2"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
 <span class="r-in"><span>          <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"tidyr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
 <span class="r-in"><span>          <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"dplyr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>        <span class="va">d</span> <span class="op">=</span> <span class="va">st</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">250</span>,<span class="op">]</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>        <span class="va">d</span> <span class="op">=</span> <span class="va">st</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">250</span>,<span class="op">]</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>          <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>            time <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html" class="external-link">as_datetime</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            time_end <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lead</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span></span>
-<span class="r-in"><span>          <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>          <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>          <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">time_end</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>        <span class="va">raw</span> <span class="op">=</span> <span class="va">df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">time</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">time</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">time</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>        <span class="va">dat</span> <span class="op">=</span> <span class="va">raw</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>        <span class="va">raw</span> <span class="op">=</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">time</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">time</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">time</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="va">dat</span> <span class="op">=</span> <span class="va">raw</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>          <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">gather</a></span><span class="op">(</span><span class="va">axis</span>, <span class="va">value</span>, <span class="op">-</span><span class="va">time</span><span class="op">)</span></span></span>
-<span class="r-in"><span>        <span class="va">d</span> <span class="op">=</span> <span class="va">d</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>activity_y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">sleep_wake</span> <span class="op">==</span> <span class="st">"sleep"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>        <span class="va">dat</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>        <span class="va">d</span> <span class="op">=</span> <span class="va">d</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>activity_y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">sleep_wake</span> <span class="op">==</span> <span class="st">"sleep"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="va">dat</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>          <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, colour <span class="op">=</span> <span class="va">axis</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>          <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_step</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>          <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment</a></span><span class="op">(</span></span></span>

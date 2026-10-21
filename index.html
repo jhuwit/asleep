@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">asleep</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,14 +59,14 @@
 <div class="section level2">
 <h2 id="install-asleep-python-module">Install <code>asleep</code> Python Module<a class="anchor" aria-label="anchor" href="#install-asleep-python-module"></a>
 </h2>
-<p>See <a href="https://github.com/OxWearables/asleep?tab=readme-ov-file#install" class="external-link uri">https://github.com/OxWearables/asleep?tab=readme-ov-file#install</a> for how to install the <code>asleep</code> python module.</p>
+<p>See <a href="https://github.com/OxWearables/asleep?tab=readme-ov-file#install" class="external-link uri">https://github.com/OxWearables/asleep?tab=readme-ov-file#install</a> for how to install the <code>asleep</code> python module. The package requires version 0.5.0 or higher of the <code>asleep</code> Python module. When the package is loaded, it declares these requirements with <code><a href="https://rstudio.github.io/reticulate/reference/py_require.html" class="external-link">reticulate::py_require()</a></code> (see <code><a href="reference/py_require_asleep.html">py_require_asleep()</a></code>), so <code>reticulate</code> will set up an environment automatically if one is not already configured.</p>
 <p>In <code>R</code>, you can do this via:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">envname</span> <span class="op">=</span> <span class="st">"asleep"</span></span>
 <span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html" class="external-link">conda_create</a></span><span class="op">(</span>envname <span class="op">=</span> <span class="va">envname</span>, </span>
 <span>                         python_version <span class="op">=</span> <span class="st">"3.8"</span><span class="op">)</span></span>
 <span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/use_python.html" class="external-link">use_condaenv</a></span><span class="op">(</span><span class="va">envname</span><span class="op">)</span></span>
-<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asleep"</span>, <span class="st">"argparse"</span>, <span class="st">"numpy"</span>, <span class="st">"pandas"</span><span class="op">)</span>, </span>
+<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asleep&gt;=0.5.0"</span>, <span class="st">"argparse"</span>, <span class="st">"numpy"</span>, <span class="st">"pandas"</span><span class="op">)</span>, </span>
 <span>                       envname <span class="op">=</span> <span class="va">envname</span>,</span>
 <span>                       method <span class="op">=</span> <span class="st">"conda"</span>,</span>
 <span>                       python_version <span class="op">=</span> <span class="st">"3.8"</span>,</span>

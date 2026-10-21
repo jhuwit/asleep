@@ -8,7 +8,14 @@ The goal of `asleep` is to wrap up the
 ## Install `asleep` Python Module
 
 See <https://github.com/OxWearables/asleep?tab=readme-ov-file#install>
-for how to install the `asleep` python module.
+for how to install the `asleep` python module. The package requires
+version 0.5.0 or higher of the `asleep` Python module. When the package
+is loaded, it declares these requirements with
+[`reticulate::py_require()`](https://rstudio.github.io/reticulate/reference/py_require.html)
+(see
+[`py_require_asleep()`](https://jhuwit.github.io/asleep/reference/py_require_asleep.md)),
+so `reticulate` will set up an environment automatically if one is not
+already configured.
 
 In `R`, you can do this via:
 
@@ -18,7 +25,7 @@ envname = "asleep"
 reticulate::conda_create(envname = envname, 
                          python_version = "3.8")
 reticulate::use_condaenv(envname)
-reticulate::py_install(c("asleep", "argparse", "numpy", "pandas"), 
+reticulate::py_install(c("asleep>=0.5.0", "argparse", "numpy", "pandas"), 
                        envname = envname,
                        method = "conda",
                        python_version = "3.8",

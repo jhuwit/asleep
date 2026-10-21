@@ -16,17 +16,14 @@ asleep(
   pytorch_device = c("cpu", "cuda:0"),
   sample_rate = NULL,
   verbose = TRUE,
-  force_download = FALSE
+  force_download = FALSE,
+  tzone = "UTC"
 )
 
 py_asleep(
   ...,
   pyenv_function = function() {
-    
-    reticulate::py_require(c("asleep @ git+https://github.com/muschellij2/asleep.git",
-    "argparse", "numpy", "pandas", "importlib"), python_version = "3.8")
-    
-    reticulate::import("asleep")
+     asleep::py_require_asleep()
  },
   show = FALSE
 )
@@ -63,7 +60,9 @@ py_asleep(
 
 - sample_rate:
 
-  Sample rate for the data, currently not used.
+  Sample rate (in Hz) of the data. If `NULL`, then
+  `attr(file, "sample_rate")` is used if present. If both are `NULL`,
+  the sample rate is not passed and `asleep` infers it from the data.
 
 - verbose:
 
@@ -73,6 +72,10 @@ py_asleep(
 
   force a download of the model, passed to
   [`sl_download_models()`](https://jhuwit.github.io/asleep/reference/sl_download_models.md)
+
+- tzone:
+
+  The timezone to use on the data after reading back into R.
 
 - ...:
 
@@ -109,7 +112,6 @@ asleep_check_result = function() {
   file = system.file("extdata/example_sleep.csv.gz", package = "asleep")
   stopifnot(file.exists(file))
   if (asleep_check_result()) {
-    try({sl_download_models()})
     out = try({asleep(file = file, verbose = 2L)})
     if (inherits(out, "try-error")) {
       message(out)
@@ -131,8 +133,8 @@ asleep_check_result = function() {
 #> Data shape for times: (480,)
 #> Data shape for nonwear: (480,)
 #> Detecting sleep windows
-#> args$outdir/tmp/RtmpI8eUGp/file1a3718f20350
-#> ssl_sleep_path: /tmp/RtmpI8eUGp/file1a3718f20350/ssl_sleep.npy, exists:FALSE
+#> args$outdir/tmp/RtmpfP40Le/file1ac25bb97e06
+#> ssl_sleep_path: /tmp/RtmpfP40Le/file1ac25bb97e06/ssl_sleep.npy, exists:FALSE
 #> data2model
 #> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,
 #>          -0.69115383, -0.6903333 ],
@@ -233,15 +235,15 @@ asleep_check_result = function() {
 #>        False, False, False, False, False, False, False, False, False,
 #>        False, False, False])
 #> Running SleepNet
-#> SleepNet outdir: /tmp/RtmpI8eUGp/file1a3718f20350
-#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/jSDVSRQMFartHAyA/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
+#> SleepNet outdir: /tmp/RtmpfP40Le/file1ac25bb97e06
+#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/BQJ6MdOizdRAQlnq/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
 #> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl
-#> SleepNet artifact ssl_sleep: /tmp/RtmpI8eUGp/file1a3718f20350/ssl_sleep.npy, exists: TRUE
-#> SleepNet artifact y_pred: /tmp/RtmpI8eUGp/file1a3718f20350/y_pred.npy, exists: FALSE
-#> SleepNet artifact pred_prob: /tmp/RtmpI8eUGp/file1a3718f20350/pred_prob.npy, exists: FALSE
-#> SleepNet artifact x_npy: /tmp/RtmpI8eUGp/file1a3718f20350/X.npy, exists: TRUE
-#> SleepNet artifact x_npy_gz: /tmp/RtmpI8eUGp/file1a3718f20350/X.npy.gz, exists: FALSE
-#> SleepNet artifact npid: /tmp/RtmpI8eUGp/file1a3718f20350/npid.npy, exists: TRUE
+#> SleepNet artifact ssl_sleep: /tmp/RtmpfP40Le/file1ac25bb97e06/ssl_sleep.npy, exists: TRUE
+#> SleepNet artifact y_pred: /tmp/RtmpfP40Le/file1ac25bb97e06/y_pred.npy, exists: FALSE
+#> SleepNet artifact pred_prob: /tmp/RtmpfP40Le/file1ac25bb97e06/pred_prob.npy, exists: FALSE
+#> SleepNet artifact x_npy: /tmp/RtmpfP40Le/file1ac25bb97e06/X.npy, exists: TRUE
+#> SleepNet artifact x_npy_gz: /tmp/RtmpfP40Le/file1ac25bb97e06/X.npy.gz, exists: FALSE
+#> SleepNet artifact npid: /tmp/RtmpfP40Le/file1ac25bb97e06/npid.npy, exists: TRUE
 #> Mapping SleepNet predictions back to original time series
 #> Generating predictions dataframe
 #> Generating sleep block df and indicate the longest block per day
@@ -268,17 +270,17 @@ asleep_check_result = function() {
       if (requireNamespace("ggplot2", quietly = TRUE) &&
           requireNamespace("tidyr", quietly = TRUE) &&
           requireNamespace("dplyr", quietly = TRUE)) {
-        d = st[1:250,] %>%
+        d = st[1:250,] |>
           dplyr::mutate(
             time = lubridate::as_datetime(time),
             time_end = dplyr::lead(time)
-          ) %>%
+          ) |>
           dplyr::filter(!is.na(time_end))
-        raw = df %>% dplyr::filter(time >= min(d$time) & time <= max(d$time))
-        dat = raw %>%
+        raw = df |> dplyr::filter(time >= min(d$time) & time <= max(d$time))
+        dat = raw |>
           tidyr::gather(axis, value, -time)
-        d = d %>% dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
-        dat %>%
+        d = d |> dplyr::mutate(activity_y = as.numeric(sleep_wake == "sleep"))
+        dat |>
           ggplot2::ggplot(ggplot2::aes(x = time, y = value, colour = axis)) +
           ggplot2::geom_step() +
           ggplot2::geom_segment(
