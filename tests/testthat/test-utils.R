@@ -79,3 +79,30 @@ testthat::test_that("renamer replaces only exact column names", {
     asleep:::renamer(dat, old = c("old", "older"), new = "new")
   )
 })
+
+test_that("sl_format_time keeps the clock time for any time zone", {
+  x = as.POSIXct("2013-06-10 19:30:00", tz = "UTC")
+  expect_equal(sl_format_time(x, "Europe/London"), "2013-06-10 19:30:00")
+  expect_equal(sl_format_time(x, "UTC"), "2013-06-10 19:30:00")
+  expect_equal(sl_format_time("2013-06-10 19:30:00"), "2013-06-10 19:30:00")
+})
+
+test_that("sl_input_tz uses the time zone of a data.frame", {
+  df = data.frame(
+    time = as.POSIXct("2013-06-10 19:30:00", tz = "Europe/London"),
+    X = 0, Y = 0, Z = 1
+  )
+  expect_equal(sl_input_tz(df), "Europe/London")
+  expect_equal(sl_input_tz("file.bin"), "UTC")
+})
+
+test_that("sl_write_csv keeps sub-millisecond time stamps", {
+  df = data.frame(
+    time = as.POSIXct("2013-06-10 19:30:00", tz = "UTC") + c(0, 1 / 85.7),
+    X = 0, Y = 0, Z = 1
+  )
+  path = sl_write_csv(df)
+  on.exit(unlink(path))
+  out = utils::read.csv(path)
+  expect_equal(out$time[2], "2013-06-10 19:30:00.011668")
+})
