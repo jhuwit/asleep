@@ -64,11 +64,12 @@ sl_input_tz = function(file) {
 }
 
 # asleep returns local clock times without a time zone, which reticulate
-# labels UTC. Relabel (not convert) them to `tzone` and return the clock time.
+# labels UTC. The result is a time-zone-free clock time, so format the clock
+# values directly: relabelling with force_tz() would give NA for clock times in
+# a daylight-saving gap of `tzone` (e.g. 01:30 on spring-forward day in London).
 sl_format_time = function(x, tzone = "UTC") {
   if (is.character(x) || is.null(x)) {
     return(x)
   }
-  lubridate::force_tz(x, tzone = tzone) |>
-    format("%Y-%m-%d %H:%M:%S")
+  format(x, "%Y-%m-%d %H:%M:%S")
 }
