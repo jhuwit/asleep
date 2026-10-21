@@ -63,13 +63,14 @@ sl_input_tz = function(file) {
   "UTC"
 }
 
-# asleep returns local clock times without a time zone, which reticulate
-# labels UTC. The result is a time-zone-free clock time, so format the clock
-# values directly: relabelling with force_tz() would give NA for clock times in
-# a daylight-saving gap of `tzone` (e.g. 01:30 on spring-forward day in London).
+# asleep returns local clock times without a time zone. reticulate stores
+# them as if they were UTC but without a tzone attribute, so they print in the
+# system time zone. Format in UTC to recover the clock time; relabelling with
+# force_tz() would give NA for clock times in a daylight-saving gap of `tzone`
+# (e.g. 01:30 on spring-forward day in London).
 sl_format_time = function(x, tzone = "UTC") {
   if (is.character(x) || is.null(x)) {
     return(x)
   }
-  format(x, "%Y-%m-%d %H:%M:%S")
+  format(x, "%Y-%m-%d %H:%M:%S", tz = "UTC")
 }

@@ -96,6 +96,16 @@ test_that("sl_format_time keeps clock times in a daylight-saving gap", {
   )
 })
 
+test_that("sl_format_time ignores the system time zone", {
+  # reticulate returns naive times as UTC instants with no tzone attribute
+  x = as.POSIXct("2013-03-31 01:30:00", tz = "UTC")
+  attr(x, "tzone") = NULL
+  old_tz = Sys.getenv("TZ", unset = NA)
+  on.exit(if (is.na(old_tz)) Sys.unsetenv("TZ") else Sys.setenv(TZ = old_tz))
+  Sys.setenv(TZ = "America/New_York")
+  expect_equal(sl_format_time(x, "Europe/London"), "2013-03-31 01:30:00")
+})
+
 test_that("sl_input_tz uses the time zone of a data.frame", {
   df = data.frame(
     time = as.POSIXct("2013-06-10 19:30:00", tz = "Europe/London"),
