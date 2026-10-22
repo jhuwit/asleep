@@ -143,9 +143,17 @@ testthat::test_that("asleep validates simple scalar arguments before running", {
 })
 
 testthat::test_that("asleep completes with cached model assets without internet access", {
-  times = asleep_fake_array(as.POSIXct(
+  # reticulate returns naive Python times as UTC instants with no tzone
+  # attribute; run under a non-UTC session time zone to catch any shift
+  old_tz = Sys.getenv("TZ", unset = NA)
+  on.exit(if (is.na(old_tz)) Sys.unsetenv("TZ") else Sys.setenv(TZ = old_tz),
+          add = TRUE)
+  Sys.setenv(TZ = "America/New_York")
+  naive = as.POSIXct(
     c("2024-01-01 22:00:00", "2024-01-01 22:01:00"), tz = "UTC"
-  ))
+  )
+  attr(naive, "tzone") = NULL
+  times = asleep_fake_array(naive)
   windows = asleep_fake_dataframe(data.frame(
     start = times[[1]], end = times[[2]] + 60,
     interval_start = times[[1]], interval_end = times[[2]] + 60
@@ -238,6 +246,21 @@ testthat::test_that("asleep completes with cached model assets without internet 
   testthat::expect_equal(result$summary$prefix, c("overall", "Monday", "weekday"))
   testthat::expect_null(captured$args$sample_rate)
 
+  # every time output is the recorded clock time, as character
+  clock = c("2024-01-01 22:00:00", "2024-01-01 22:01:00")
+  testthat::expect_equal(result$predictions$time, clock)
+  testthat::expect_equal(result$times, clock)
+  testthat::expect_equal(result$times_utc, clock)
+  testthat::expect_equal(result$output_data$data$time, clock)
+  testthat::expect_equal(result$output_model$times, clock)
+  testthat::expect_equal(result$sleep_windows$start, clock[[1]])
+  testthat::expect_equal(result$sleep_windows$interval_end,
+                         "2024-01-01 22:02:00")
+  testthat::expect_equal(result$sleep_windows_long$end, "2024-01-01 22:02:00")
+  testthat::expect_equal(result$output_windows$all_sleep_wins_df$start,
+                         clock[[1]])
+  testthat::expect_null(attr(result, "tzone"))
+
   # explicit sample rate is passed as an integer
   suppressMessages(asleep(input, outdir = tempfile(), sample_rate = 30))
   testthat::expect_identical(captured$args$sample_rate, 30L)
@@ -247,8 +270,10 @@ testthat::test_that("asleep completes with cached model assets without internet 
     time = as.POSIXct("2024-01-01 22:00:00", tz = "UTC"), x = 1, y = 2, z = 3
   )
   attr(df, "sample_rate") = 25
-  suppressMessages(asleep(df, outdir = tempfile()))
+  df_result = suppressMessages(asleep(df, outdir = tempfile()))
   testthat::expect_identical(captured$args$sample_rate, 25L)
+  # data.frame input carries its time zone
+  testthat::expect_equal(attr(df_result, "tzone"), "UTC")
 
   # explicit argument overrides the attribute
   suppressMessages(asleep(df, outdir = tempfile(), sample_rate = 50L))

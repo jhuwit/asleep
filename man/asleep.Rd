@@ -14,8 +14,7 @@ asleep(
   pytorch_device = c("cpu", "cuda:0"),
   sample_rate = NULL,
   verbose = TRUE,
-  force_download = FALSE,
-  tzone = NULL
+  force_download = FALSE
 )
 
 py_asleep(
@@ -51,11 +50,6 @@ the sample rate is not passed and \code{asleep} infers it from the data.}
 
 \item{force_download}{force a download of the model, passed to \code{\link[=sl_download_models]{sl_download_models()}}}
 
-\item{tzone}{The time zone of the clock times returned by \code{asleep}.  The
-Python module returns local clock times without a time zone; they are
-relabelled (not converted) to \code{tzone}.  If \code{NULL}, the time zone of
-\code{file$time} is used for a \code{data.frame}, and \code{"UTC"} otherwise.}
-
 \item{...}{arguments to pass to \link{asleep}}
 
 \item{pyenv_function}{function that loads the forest Python package.
@@ -68,6 +62,14 @@ screen while the child process is running, passed to \code{\link[callr:r]{callr:
 }
 \value{
 A list of outputs, including summaries, paths, and dataframes.
+Times are returned as character clock times without a time zone, exactly
+as recorded (they are not converted to UTC).  For a \code{data.frame} input with
+a \code{POSIXct} \code{time} column, \code{attr(result, "tzone")} holds that column's time
+zone; otherwise (e.g. device files, which carry no time zone) it is \code{NULL}.
+To get date-times, use e.g.
+\code{lubridate::ymd_hms(x, tz = attr(result, "tzone"))}; set the time zone of
+\code{file$time} before calling \code{asleep} if needed.  Clock times in a
+daylight-saving gap will be \code{NA} unless handled (see \code{lubridate::roll_dst}).
 }
 \description{
 Run \code{asleep} Model on Data
