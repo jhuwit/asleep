@@ -254,8 +254,12 @@ testthat::test_that("asleep completes with cached model assets without internet 
   suppressMessages(asleep(df, outdir = tempfile(), sample_rate = 50L))
   testthat::expect_identical(captured$args$sample_rate, 50L)
 
+  # non-integer sample rates (e.g. GENEActiv 85.7 Hz) are passed unchanged
+  suppressMessages(asleep(input, outdir = tempfile(), sample_rate = 85.7))
+  testthat::expect_identical(captured$args$sample_rate, 85.7)
+
   testthat::expect_error(
-    asleep(input, outdir = tempfile(), sample_rate = 29.97),
+    asleep(input, outdir = tempfile(), sample_rate = -1),
     "sample_rate"
   )
 })

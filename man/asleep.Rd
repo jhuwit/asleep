@@ -15,7 +15,7 @@ asleep(
   sample_rate = NULL,
   verbose = TRUE,
   force_download = FALSE,
-  tzone = "UTC"
+  tzone = NULL
 )
 
 py_asleep(
@@ -42,7 +42,8 @@ the current device time. e.g. +1 or -1}
 
 \item{pytorch_device}{device to use for prediction for PyTorch.}
 
-\item{sample_rate}{Sample rate (in Hz) of the data.  If \code{NULL}, then
+\item{sample_rate}{Sample rate (in Hz) of the data; need not be an integer
+(e.g. 85.7 Hz for GENEActiv).  If \code{NULL}, then
 \code{attr(file, "sample_rate")} is used if present.  If both are \code{NULL},
 the sample rate is not passed and \code{asleep} infers it from the data.}
 
@@ -50,7 +51,10 @@ the sample rate is not passed and \code{asleep} infers it from the data.}
 
 \item{force_download}{force a download of the model, passed to \code{\link[=sl_download_models]{sl_download_models()}}}
 
-\item{tzone}{The timezone to use on the data after reading back into R.}
+\item{tzone}{The time zone of the clock times returned by \code{asleep}.  The
+Python module returns local clock times without a time zone; they are
+relabelled (not converted) to \code{tzone}.  If \code{NULL}, the time zone of
+\code{file$time} is used for a \code{data.frame}, and \code{"UTC"} otherwise.}
 
 \item{...}{arguments to pass to \link{asleep}}
 

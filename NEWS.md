@@ -3,7 +3,13 @@
 * Now requires the `asleep` Python module version 0.5.0 or higher (from PyPI).
 * `asleep()` now passes `sample_rate` to `asleep`.  If not specified, it uses
   `attr(file, "sample_rate")`; if neither is set, the sample rate is inferred.
-* Added `tzone` argument to `asleep()`.
+* Added `tzone` argument to `asleep()`.  The Python module returns local
+  clock times without a time zone; these are now relabelled (`force_tz`) to
+  `tzone` rather than converted (`with_tz`), which shifted the clock for
+  non-UTC time zones.  `tzone` defaults to the time zone of the input data.
+* `sample_rate` no longer has to be an integer (e.g. GENEActiv 85.7 Hz).
+* `sl_write_csv()` writes time stamps to the microsecond; rounding to the
+  millisecond made the sample interval of non-integer-rate data irregular.
 
 # asleep 0.3.0
 

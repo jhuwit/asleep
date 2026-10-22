@@ -113,8 +113,12 @@ summarize_daily_sleep = function(sdf) {
 #' the current device time. e.g. +1 or -1
 #' @param report_light_and_temp If true, it adds mean temp, and light columns to the predictions
 #' @param force_download force a download of the model, passed to [sl_download_models()]
-#' @param tzone The timezone to use on the data after reading back into R.
-#' @param sample_rate Sample rate (in Hz) of the data.  If `NULL`, then
+#' @param tzone The time zone of the clock times returned by `asleep`.  The
+#' Python module returns local clock times without a time zone; they are
+#' relabelled (not converted) to `tzone`.  If `NULL`, the time zone of
+#' `file$time` is used for a `data.frame`, and `"UTC"` otherwise.
+#' @param sample_rate Sample rate (in Hz) of the data; need not be an integer
+#' (e.g. 85.7 Hz for GENEActiv).  If `NULL`, then
 #' `attr(file, "sample_rate")` is used if present.  If both are `NULL`,
 #' the sample rate is not passed and `asleep` infers it from the data.
 #'
@@ -195,7 +199,7 @@ asleep = function(
     sample_rate = NULL,
     verbose = TRUE,
     force_download = FALSE,
-    tzone = "UTC"
+    tzone = NULL
 ) {
   on.exit(cleanup_uv_lock_files(), add = TRUE)
 
@@ -260,9 +264,15 @@ asleep = function(
   }
   if (!is.null(sample_rate)) {
     assertthat::assert_that(
-      assertthat::is.count(sample_rate)
+      assertthat::is.number(sample_rate),
+      sample_rate > 0
     )
-    args$sample_rate = as.integer(sample_rate)
+    # whole-number rates stay integers; others (e.g. 85.7 Hz) are passed as is
+    args$sample_rate = if (sample_rate == round(sample_rate)) {
+      as.integer(sample_rate)
+    } else {
+      as.numeric(sample_rate)
+    }
   } else if (inherits(args, "python.builtin.object") &&
              reticulate::py_has_attr(args, "sample_rate")) {
     # Namespace is the class, so remove any value left from a previous call
@@ -270,6 +280,9 @@ asleep = function(
   }
 
   # Working on filenames
+  if (is.null(tzone)) {
+    tzone = sl_input_tz(file)
+  }
   file = transform_data_to_files(file = file, verbose = verbose)
   remove_file = attr(file, "remove_file")
   if (length(file) == 1 &&
@@ -644,13 +657,7 @@ asleep = function(
   )
 
   # NEED THIS FOR TIMES!
-  make_utc_char = function(x, tzone = "UTC") {
-    if (is.character(x) || is.null(x)) {
-      return(x)
-    }
-    lubridate::with_tz(x, tzone = tzone) |>
-      format("%Y-%m-%d %H:%M:%S")
-  }
+  make_utc_char = function(x, tzone = "UTC") sl_format_time(x, tzone = tzone)
   predictions_df$time = make_utc_char(predictions_df$time, tzone = tzone)
   out_data$data$time = make_utc_char(out_data$data$time, tzone = tzone)
 
