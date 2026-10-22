@@ -51,24 +51,26 @@ renamer = function(data, old, new) {
 }
 
 
-# Time zone of a data.frame input's time column, or "UTC" for file input
+# Time zone of a data.frame input's time column, or NULL if unknown (files,
+# or a non-POSIXct time column). No tzone means the session time zone, which
+# is what sl_write_csv() formats the clock times in.
 sl_input_tz = function(file) {
   if (is.data.frame(file)) {
     data = sl_rename_data(file)
     if (inherits(data$time, "POSIXt")) {
       tzone = attr(data$time, "tzone")
-      return(if (is.null(tzone) || !nzchar(tzone[1])) "UTC" else tzone[1])
+      return(if (is.null(tzone) || !nzchar(tzone[1])) Sys.timezone() else tzone[1])
     }
   }
-  "UTC"
+  NULL
 }
 
 # asleep returns local clock times without a time zone. reticulate stores
 # them as if they were UTC but without a tzone attribute, so they print in the
 # system time zone. Format in UTC to recover the clock time; relabelling with
-# force_tz() would give NA for clock times in a daylight-saving gap of `tzone`
-# (e.g. 01:30 on spring-forward day in London).
-sl_format_time = function(x, tzone = "UTC") {
+# force_tz() would give NA for clock times in a daylight-saving gap (e.g. 01:30
+# on spring-forward day in London).
+sl_format_time = function(x) {
   if (is.character(x) || is.null(x)) {
     return(x)
   }
