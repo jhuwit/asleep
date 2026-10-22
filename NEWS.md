@@ -1,3 +1,10 @@
+# asleep (development version)
+
+* `sl_write_csv()` formats times about five times faster with much less
+  memory, and writes the CSV in chunks (`chunk_size`, default 1e6 rows), so
+  writing a data frame for `asleep()` no longer needs a full character copy of
+  every time. The file written is identical to before.
+
 # asleep 0.4.0
 
 * Now requires the `asleep` Python module version 0.5.0 or higher (from PyPI).
