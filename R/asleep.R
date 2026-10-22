@@ -113,16 +113,20 @@ summarize_daily_sleep = function(sdf) {
 #' the current device time. e.g. +1 or -1
 #' @param report_light_and_temp If true, it adds mean temp, and light columns to the predictions
 #' @param force_download force a download of the model, passed to [sl_download_models()]
-#' @param tzone The time zone of the clock times returned by `asleep`.  The
-#' Python module returns local clock times without a time zone; they are
-#' relabelled (not converted) to `tzone`.  If `NULL`, the time zone of
-#' `file$time` is used for a `data.frame`, and `"UTC"` otherwise.
 #' @param sample_rate Sample rate (in Hz) of the data; need not be an integer
 #' (e.g. 85.7 Hz for GENEActiv).  If `NULL`, then
 #' `attr(file, "sample_rate")` is used if present.  If both are `NULL`,
 #' the sample rate is not passed and `asleep` infers it from the data.
 #'
 #' @returns A list of outputs, including summaries, paths, and dataframes.
+#' Times are returned as character clock times without a time zone, exactly
+#' as recorded (they are not converted to UTC).  For a `data.frame` input with
+#' a `POSIXct` `time` column, `attr(result, "tzone")` holds that column's time
+#' zone; otherwise (e.g. device files, which carry no time zone) it is `NULL`.
+#' To get date-times, use e.g.
+#' `lubridate::ymd_hms(x, tz = attr(result, "tzone"))`; set the time zone of
+#' `file$time` before calling `asleep` if needed.  Clock times in a
+#' daylight-saving gap will be `NA` unless handled (see `lubridate::roll_dst`).
 #' @export
 #'
 #' @examples
@@ -159,7 +163,7 @@ summarize_daily_sleep = function(sdf) {
 #'       st = out$predictions
 #'       if (requireNamespace("ggplot2", quietly = TRUE) &&
 #'           requireNamespace("tidyr", quietly = TRUE) &&
-#'           requireNamespace("dplyr", quietly = TRUE)) {
+#'           requireNamespace("lubridate", quietly = TRUE)) {
 #'         d = st[1:250,] |>
 #'           dplyr::mutate(
 #'             time = lubridate::as_datetime(time),
@@ -198,8 +202,7 @@ asleep = function(
     pytorch_device = c("cpu", "cuda:0"),
     sample_rate = NULL,
     verbose = TRUE,
-    force_download = FALSE,
-    tzone = NULL
+    force_download = FALSE
 ) {
   on.exit(cleanup_uv_lock_files(), add = TRUE)
 
@@ -280,9 +283,7 @@ asleep = function(
   }
 
   # Working on filenames
-  if (is.null(tzone)) {
-    tzone = sl_input_tz(file)
-  }
+  tzone = sl_input_tz(file)
   file = transform_data_to_files(file = file, verbose = verbose)
   remove_file = attr(file, "remove_file")
   if (length(file) == 1 &&
@@ -657,30 +658,37 @@ asleep = function(
   )
 
   # NEED THIS FOR TIMES!
-  make_utc_char = function(x, tzone = "UTC") sl_format_time(x, tzone = tzone)
-  predictions_df$time = make_utc_char(predictions_df$time, tzone = tzone)
-  out_data$data$time = make_utc_char(out_data$data$time, tzone = tzone)
+  predictions_df$time = sl_format_time(predictions_df$time)
+  out_data$data$time = sl_format_time(out_data$data$time)
 
-  out_windows$sleep_wins_long_per_day_df$start = make_utc_char(
-    out_windows$sleep_wins_long_per_day_df$start, tzone = tzone)
-  out_windows$sleep_wins_long_per_day_df$end = make_utc_char(
-    out_windows$sleep_wins_long_per_day_df$end, tzone = tzone)
+  out_windows$sleep_wins_long_per_day_df$start = sl_format_time(
+    out_windows$sleep_wins_long_per_day_df$start)
+  out_windows$sleep_wins_long_per_day_df$end = sl_format_time(
+    out_windows$sleep_wins_long_per_day_df$end)
 
-  out_model$times = make_utc_char(out_model$times)
+  out_model$times = sl_format_time(out_model$times)
 
-  out_windows$all_sleep_wins_df$start = make_utc_char(
-    out_windows$all_sleep_wins_df$start, tzone = tzone)
-  out_windows$all_sleep_wins_df$end = make_utc_char(
-    out_windows$all_sleep_wins_df$end, tzone = tzone)
-  out_windows$all_sleep_wins_df$interval_start = make_utc_char(
-    out_windows$all_sleep_wins_df$interval_start, tzone = tzone)
-  out_windows$all_sleep_wins_df$interval_end = make_utc_char(
-    out_windows$all_sleep_wins_df$interval_end, tzone = tzone)
+  out_windows$all_sleep_wins_df$start = sl_format_time(
+    out_windows$all_sleep_wins_df$start)
+  out_windows$all_sleep_wins_df$end = sl_format_time(
+    out_windows$all_sleep_wins_df$end)
+  out_windows$all_sleep_wins_df$interval_start = sl_format_time(
+    out_windows$all_sleep_wins_df$interval_start)
+  out_windows$all_sleep_wins_df$interval_end = sl_format_time(
+    out_windows$all_sleep_wins_df$interval_end)
+
+  for (col in c("start", "end", "interval_start", "interval_end")) {
+    df_all_sleep_wins[[col]] = sl_format_time(df_all_sleep_wins[[col]])
+  }
+  for (col in c("start", "end")) {
+    df_sleep_wins_long_per_day[[col]] = sl_format_time(
+      df_sleep_wins_long_per_day[[col]])
+  }
 
   result = list(
     predictions = predictions_df,
-    times = times,
-    times_utc = make_utc_char(reticulate::py_to_r(times), tzone = tzone),
+    times = sl_format_time(reticulate::py_to_r(times)),
+    times_utc = sl_format_time(reticulate::py_to_r(times)),
     sleep_windows = df_all_sleep_wins,
     sleep_windows_long = df_sleep_wins_long_per_day,
     day_summary = day_summary_df,
@@ -695,6 +703,7 @@ asleep = function(
   result$output_temperature = out_temp
 
   result = lapply(result, reticulate::py_to_r)
+  attr(result, "tzone") = tzone
   result
 }
 
