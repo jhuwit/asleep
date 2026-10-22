@@ -16,8 +16,7 @@ asleep(
   pytorch_device = c("cpu", "cuda:0"),
   sample_rate = NULL,
   verbose = TRUE,
-  force_download = FALSE,
-  tzone = NULL
+  force_download = FALSE
 )
 
 py_asleep(
@@ -74,13 +73,6 @@ py_asleep(
   force a download of the model, passed to
   [`sl_download_models()`](https://jhuwit.github.io/asleep/reference/sl_download_models.md)
 
-- tzone:
-
-  The time zone of the clock times returned by `asleep`. The Python
-  module returns local clock times without a time zone; they are
-  relabelled (not converted) to `tzone`. If `NULL`, the time zone of
-  `file$time` is used for a `data.frame`, and `"UTC"` otherwise.
-
 - ...:
 
   arguments to pass to asleep
@@ -100,7 +92,16 @@ py_asleep(
 
 ## Value
 
-A list of outputs, including summaries, paths, and dataframes.
+A list of outputs, including summaries, paths, and dataframes. Times are
+returned as character clock times without a time zone, exactly as
+recorded (they are not converted to UTC). For a `data.frame` input with
+a `POSIXct` `time` column, `attr(result, "tzone")` holds that column's
+time zone; otherwise (e.g. device files, which carry no time zone) it is
+`NULL`. To get date-times, use e.g.
+`lubridate::ymd_hms(x, tz = attr(result, "tzone"))`; set the time zone
+of `file$time` before calling `asleep` if needed. Clock times in a
+daylight-saving gap will be `NA` unless handled (see
+`lubridate::roll_dst`).
 
 ## Examples
 
@@ -137,8 +138,8 @@ asleep_check_result = function() {
 #> Data shape for times: (480,)
 #> Data shape for nonwear: (480,)
 #> Detecting sleep windows
-#> args$outdir/tmp/RtmptFxaJN/file1c1556f56d10
-#> ssl_sleep_path: /tmp/RtmptFxaJN/file1c1556f56d10/ssl_sleep.npy, exists:FALSE
+#> args$outdir/tmp/RtmpmGuURS/file1a193b4e3b3d
+#> ssl_sleep_path: /tmp/RtmpmGuURS/file1a193b4e3b3d/ssl_sleep.npy, exists:FALSE
 #> data2model
 #> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,
 #>          -0.69115383, -0.6903333 ],
@@ -239,15 +240,15 @@ asleep_check_result = function() {
 #>        False, False, False, False, False, False, False, False, False,
 #>        False, False, False])
 #> Running SleepNet
-#> SleepNet outdir: /tmp/RtmptFxaJN/file1c1556f56d10
-#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/OnsrOwU_u2X66QlB/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
+#> SleepNet outdir: /tmp/RtmpmGuURS/file1a193b4e3b3d
+#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/WfsVBTWkqb75hC6E/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
 #> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl
-#> SleepNet artifact ssl_sleep: /tmp/RtmptFxaJN/file1c1556f56d10/ssl_sleep.npy, exists: TRUE
-#> SleepNet artifact y_pred: /tmp/RtmptFxaJN/file1c1556f56d10/y_pred.npy, exists: FALSE
-#> SleepNet artifact pred_prob: /tmp/RtmptFxaJN/file1c1556f56d10/pred_prob.npy, exists: FALSE
-#> SleepNet artifact x_npy: /tmp/RtmptFxaJN/file1c1556f56d10/X.npy, exists: TRUE
-#> SleepNet artifact x_npy_gz: /tmp/RtmptFxaJN/file1c1556f56d10/X.npy.gz, exists: FALSE
-#> SleepNet artifact npid: /tmp/RtmptFxaJN/file1c1556f56d10/npid.npy, exists: TRUE
+#> SleepNet artifact ssl_sleep: /tmp/RtmpmGuURS/file1a193b4e3b3d/ssl_sleep.npy, exists: TRUE
+#> SleepNet artifact y_pred: /tmp/RtmpmGuURS/file1a193b4e3b3d/y_pred.npy, exists: FALSE
+#> SleepNet artifact pred_prob: /tmp/RtmpmGuURS/file1a193b4e3b3d/pred_prob.npy, exists: FALSE
+#> SleepNet artifact x_npy: /tmp/RtmpmGuURS/file1a193b4e3b3d/X.npy, exists: TRUE
+#> SleepNet artifact x_npy_gz: /tmp/RtmpmGuURS/file1a193b4e3b3d/X.npy.gz, exists: FALSE
+#> SleepNet artifact npid: /tmp/RtmpmGuURS/file1a193b4e3b3d/npid.npy, exists: TRUE
 #> Mapping SleepNet predictions back to original time series
 #> Generating predictions dataframe
 #> Generating sleep block df and indicate the longest block per day
@@ -273,7 +274,7 @@ asleep_check_result = function() {
       st = out$predictions
       if (requireNamespace("ggplot2", quietly = TRUE) &&
           requireNamespace("tidyr", quietly = TRUE) &&
-          requireNamespace("dplyr", quietly = TRUE)) {
+          requireNamespace("lubridate", quietly = TRUE)) {
         d = st[1:250,] |>
           dplyr::mutate(
             time = lubridate::as_datetime(time),

@@ -51,8 +51,7 @@ Run asleep with Python"></head><body>
 <span>  pytorch_device <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cpu"</span>, <span class="st">"cuda:0"</span><span class="op">)</span>,</span>
 <span>  sample_rate <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  force_download <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  tzone <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  force_download <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">py_asleep</span><span class="op">(</span></span>
@@ -110,13 +109,6 @@ the sample rate is not passed and <code>asleep</code> infers it from the data.</
 <dd><p>force a download of the model, passed to <code><a href="sl_download_models.html">sl_download_models()</a></code></p></dd>
 
 
-<dt id="arg-tzone">tzone<a class="anchor" aria-label="anchor" href="#arg-tzone"></a></dt>
-<dd><p>The time zone of the clock times returned by <code>asleep</code>.  The
-Python module returns local clock times without a time zone; they are
-relabelled (not converted) to <code>tzone</code>.  If <code>NULL</code>, the time zone of
-<code>file$time</code> is used for a <code>data.frame</code>, and <code>"UTC"</code> otherwise.</p></dd>
-
-
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>arguments to pass to asleep</p></dd>
 
@@ -135,7 +127,15 @@ screen while the child process is running, passed to <code><a href="https://call
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of outputs, including summaries, paths, and dataframes.</p>
+    <p>A list of outputs, including summaries, paths, and dataframes.
+Times are returned as character clock times without a time zone, exactly
+as recorded (they are not converted to UTC).  For a <code>data.frame</code> input with
+a <code>POSIXct</code> <code>time</code> column, <code>attr(result, "tzone")</code> holds that column's time
+zone; otherwise (e.g. device files, which carry no time zone) it is <code>NULL</code>.
+To get date-times, use e.g.
+<code>lubridate::ymd_hms(x, tz = attr(result, "tzone"))</code>; set the time zone of
+<code>file$time</code> before calling <code>asleep</code> if needed.  Clock times in a
+daylight-saving gap will be <code>NA</code> unless handled (see <code>lubridate::roll_dst</code>).</p>
     </div>
 
     <div class="section level2">
@@ -172,8 +172,8 @@ screen while the child process is running, passed to <code><a href="https://call
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for times: (480,)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Data shape for nonwear: (480,)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Detecting sleep windows</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> args$outdir/tmp/RtmptFxaJN/file1c1556f56d10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ssl_sleep_path: /tmp/RtmptFxaJN/file1c1556f56d10/ssl_sleep.npy, exists:FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> args$outdir/tmp/RtmpmGuURS/file1a193b4e3b3d</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ssl_sleep_path: /tmp/RtmpmGuURS/file1a193b4e3b3d/ssl_sleep.npy, exists:FALSE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> data2model</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>          -0.69115383, -0.6903333 ],</span>
@@ -274,15 +274,15 @@ screen while the child process is running, passed to <code><a href="https://call
 <span class="r-msg co"><span class="r-pr">#&gt;</span>        False, False, False, False, False, False, False, False, False,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>        False, False, False])</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running SleepNet</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet outdir: /tmp/RtmptFxaJN/file1c1556f56d10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/OnsrOwU_u2X66QlB/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet outdir: /tmp/RtmpmGuURS/file1a193b4e3b3d</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/WfsVBTWkqb75hC6E/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact ssl_sleep: /tmp/RtmptFxaJN/file1c1556f56d10/ssl_sleep.npy, exists: TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact y_pred: /tmp/RtmptFxaJN/file1c1556f56d10/y_pred.npy, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact pred_prob: /tmp/RtmptFxaJN/file1c1556f56d10/pred_prob.npy, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy: /tmp/RtmptFxaJN/file1c1556f56d10/X.npy, exists: TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy_gz: /tmp/RtmptFxaJN/file1c1556f56d10/X.npy.gz, exists: FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact npid: /tmp/RtmptFxaJN/file1c1556f56d10/npid.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact ssl_sleep: /tmp/RtmpmGuURS/file1a193b4e3b3d/ssl_sleep.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact y_pred: /tmp/RtmpmGuURS/file1a193b4e3b3d/y_pred.npy, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact pred_prob: /tmp/RtmpmGuURS/file1a193b4e3b3d/pred_prob.npy, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy: /tmp/RtmpmGuURS/file1a193b4e3b3d/X.npy, exists: TRUE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact x_npy_gz: /tmp/RtmpmGuURS/file1a193b4e3b3d/X.npy.gz, exists: FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> SleepNet artifact npid: /tmp/RtmpmGuURS/file1a193b4e3b3d/npid.npy, exists: TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping SleepNet predictions back to original time series</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating predictions dataframe</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating sleep block df and indicate the longest block per day</span>
@@ -308,7 +308,7 @@ screen while the child process is running, passed to <code><a href="https://call
 <span class="r-in"><span>      <span class="va">st</span> <span class="op">=</span> <span class="va">out</span><span class="op">$</span><span class="va">predictions</span></span></span>
 <span class="r-in"><span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggplot2"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
 <span class="r-in"><span>          <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"tidyr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
-<span class="r-in"><span>          <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"dplyr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>          <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"lubridate"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>        <span class="va">d</span> <span class="op">=</span> <span class="va">st</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">250</span>,<span class="op">]</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>          <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>            time <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html" class="external-link">as_datetime</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>,</span></span>

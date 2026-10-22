@@ -37,7 +37,9 @@
 <ul><li>Now requires the <code>asleep</code> Python module version 0.5.0 or higher (from PyPI).</li>
 <li>
 <code><a href="../reference/asleep.html">asleep()</a></code> now passes <code>sample_rate</code> to <code>asleep</code>. If not specified, it uses <code>attr(file, "sample_rate")</code>; if neither is set, the sample rate is inferred.</li>
-<li>Added <code>tzone</code> argument to <code><a href="../reference/asleep.html">asleep()</a></code>. The Python module returns local clock times without a time zone; these are now relabelled (<code>force_tz</code>) to <code>tzone</code> rather than converted (<code>with_tz</code>), which shifted the clock for non-UTC time zones. <code>tzone</code> defaults to the time zone of the input data.</li>
+<li>Times returned by <code><a href="../reference/asleep.html">asleep()</a></code> are the recorded clock times without a time zone; they are no longer shifted for non-UTC data or by the system time zone, and clock times in a daylight-saving gap are kept. For <code>data.frame</code> input, <code>attr(result, "tzone")</code> gives the time zone of <code>file$time</code>. <code>times</code>, <code>sleep_windows</code> and <code>sleep_windows_long</code> are now character clock times too; they were <code>POSIXct</code> that displayed in the system time zone.</li>
+<li>
+<code>dplyr</code> (&gt;= 1.2.0) is now in Imports; <code><a href="../reference/asleep.html">asleep()</a></code> always uses it. <code>lubridate</code> moved to Suggests.</li>
 <li>
 <code>sample_rate</code> no longer has to be an integer (e.g. GENEActiv 85.7 Hz).</li>
 <li>
