@@ -110,7 +110,7 @@ asleep_check_result = function() {
       st = out$predictions
       if (requireNamespace("ggplot2", quietly = TRUE) &&
           requireNamespace("tidyr", quietly = TRUE) &&
-          requireNamespace("dplyr", quietly = TRUE)) {
+          requireNamespace("lubridate", quietly = TRUE)) {
         d = st[1:250,] |>
           dplyr::mutate(
             time = lubridate::as_datetime(time),

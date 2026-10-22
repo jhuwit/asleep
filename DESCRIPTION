@@ -19,15 +19,15 @@ SystemRequirements: Python (>= 3.8), 'asleep' Python module (>= 0.5.0)
 Imports: 
     assertthat,
     curl,
-    lubridate,
+    dplyr (>= 1.2.0),
     methods,
     readr,
     reticulate (>= 1.42.0),
     rlang
 Suggests: 
     tidyr,
-    dplyr,
     ggplot2,
+    lubridate,
     testthat (>= 3.0.0),
     callr
 Config/testthat/edition: 3

@@ -9,6 +9,8 @@
   input, `attr(result, "tzone")` gives the time zone of `file$time`.
   `times`, `sleep_windows` and `sleep_windows_long` are now character clock
   times too; they were `POSIXct` that displayed in the system time zone.
+* `dplyr` (>= 1.2.0) is now in Imports; `asleep()` always uses it.  `lubridate`
+  moved to Suggests.
 * `sample_rate` no longer has to be an integer (e.g. GENEActiv 85.7 Hz).
 * `sl_write_csv()` writes time stamps to the microsecond; rounding to the
   millisecond made the sample interval of non-integer-rate data irregular.
