@@ -17,7 +17,7 @@ asleep(
   sample_rate = NULL,
   verbose = TRUE,
   force_download = FALSE,
-  tzone = "UTC"
+  tzone = NULL
 )
 
 py_asleep(
@@ -60,9 +60,10 @@ py_asleep(
 
 - sample_rate:
 
-  Sample rate (in Hz) of the data. If `NULL`, then
-  `attr(file, "sample_rate")` is used if present. If both are `NULL`,
-  the sample rate is not passed and `asleep` infers it from the data.
+  Sample rate (in Hz) of the data; need not be an integer (e.g. 85.7 Hz
+  for GENEActiv). If `NULL`, then `attr(file, "sample_rate")` is used if
+  present. If both are `NULL`, the sample rate is not passed and
+  `asleep` infers it from the data.
 
 - verbose:
 
@@ -75,7 +76,10 @@ py_asleep(
 
 - tzone:
 
-  The timezone to use on the data after reading back into R.
+  The time zone of the clock times returned by `asleep`. The Python
+  module returns local clock times without a time zone; they are
+  relabelled (not converted) to `tzone`. If `NULL`, the time zone of
+  `file$time` is used for a `data.frame`, and `"UTC"` otherwise.
 
 - ...:
 
@@ -133,8 +137,8 @@ asleep_check_result = function() {
 #> Data shape for times: (480,)
 #> Data shape for nonwear: (480,)
 #> Detecting sleep windows
-#> args$outdir/tmp/RtmpxX2m7d/file1a2b3afc83aa
-#> ssl_sleep_path: /tmp/RtmpxX2m7d/file1a2b3afc83aa/ssl_sleep.npy, exists:FALSE
+#> args$outdir/tmp/RtmptFxaJN/file1c1556f56d10
+#> ssl_sleep_path: /tmp/RtmptFxaJN/file1c1556f56d10/ssl_sleep.npy, exists:FALSE
 #> data2model
 #> array([[[-0.704     , -0.72079488, -0.66515385, ..., -0.69130774,
 #>          -0.69115383, -0.6903333 ],
@@ -235,15 +239,15 @@ asleep_check_result = function() {
 #>        False, False, False, False, False, False, False, False, False,
 #>        False, False, False])
 #> Running SleepNet
-#> SleepNet outdir: /tmp/RtmpxX2m7d/file1a2b3afc83aa
-#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/Nx_dpge626d2OPOQ/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
+#> SleepNet outdir: /tmp/RtmptFxaJN/file1c1556f56d10
+#> Upstream ssl model path: /home/runner/.cache/R/reticulate/uv/cache/archive-v0/OnsrOwU_u2X66QlB/lib/python3.8/site-packages/asleep/ssl.joblib.lzma, exists: TRUE
 #> SleepNet weight URL: https://github.com/OxWearables/asleep/releases/download/0.4.9/sleepnet_apr_16_2024.mdl
-#> SleepNet artifact ssl_sleep: /tmp/RtmpxX2m7d/file1a2b3afc83aa/ssl_sleep.npy, exists: TRUE
-#> SleepNet artifact y_pred: /tmp/RtmpxX2m7d/file1a2b3afc83aa/y_pred.npy, exists: FALSE
-#> SleepNet artifact pred_prob: /tmp/RtmpxX2m7d/file1a2b3afc83aa/pred_prob.npy, exists: FALSE
-#> SleepNet artifact x_npy: /tmp/RtmpxX2m7d/file1a2b3afc83aa/X.npy, exists: TRUE
-#> SleepNet artifact x_npy_gz: /tmp/RtmpxX2m7d/file1a2b3afc83aa/X.npy.gz, exists: FALSE
-#> SleepNet artifact npid: /tmp/RtmpxX2m7d/file1a2b3afc83aa/npid.npy, exists: TRUE
+#> SleepNet artifact ssl_sleep: /tmp/RtmptFxaJN/file1c1556f56d10/ssl_sleep.npy, exists: TRUE
+#> SleepNet artifact y_pred: /tmp/RtmptFxaJN/file1c1556f56d10/y_pred.npy, exists: FALSE
+#> SleepNet artifact pred_prob: /tmp/RtmptFxaJN/file1c1556f56d10/pred_prob.npy, exists: FALSE
+#> SleepNet artifact x_npy: /tmp/RtmptFxaJN/file1c1556f56d10/X.npy, exists: TRUE
+#> SleepNet artifact x_npy_gz: /tmp/RtmptFxaJN/file1c1556f56d10/X.npy.gz, exists: FALSE
+#> SleepNet artifact npid: /tmp/RtmptFxaJN/file1c1556f56d10/npid.npy, exists: TRUE
 #> Mapping SleepNet predictions back to original time series
 #> Generating predictions dataframe
 #> Generating sleep block df and indicate the longest block per day

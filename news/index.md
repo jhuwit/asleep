@@ -9,7 +9,15 @@
   `attr(file, "sample_rate")`; if neither is set, the sample rate is
   inferred.
 - Added `tzone` argument to
-  [`asleep()`](https://jhuwit.github.io/asleep/reference/asleep.md).
+  [`asleep()`](https://jhuwit.github.io/asleep/reference/asleep.md). The
+  Python module returns local clock times without a time zone; these are
+  now relabelled (`force_tz`) to `tzone` rather than converted
+  (`with_tz`), which shifted the clock for non-UTC time zones. `tzone`
+  defaults to the time zone of the input data.
+- `sample_rate` no longer has to be an integer (e.g. GENEActiv 85.7 Hz).
+- [`sl_write_csv()`](https://jhuwit.github.io/asleep/reference/sl_rename_data.md)
+  writes time stamps to the microsecond; rounding to the millisecond
+  made the sample interval of non-integer-rate data irregular.
 
 ## asleep 0.3.0
 
