@@ -1,4 +1,4 @@
-# asleep (development version)
+# asleep 0.4.1
 
 * `sl_write_csv()` formats times about five times faster with much less
   memory, and writes the CSV in chunks (`chunk_size`, default 1e6 rows), so

@@ -9,9 +9,9 @@
 
 ## Changes in this version
 
-* Now requires the 'asleep' Python module (>= 0.5.0) from PyPI, declared
-  through `reticulate::py_require()`.
-* `asleep()` now passes a `sample_rate` to the Python module.
+* `sl_write_csv()` formats time stamps about five times faster and with much
+  less memory, and writes the CSV in chunks (new `chunk_size` argument,
+  default 1e6 rows). The file written is identical to the previous version.
 
 ## Reverse dependencies
 
